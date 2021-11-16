@@ -4,14 +4,13 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.GravityCompat
 import com.example.digitron.databinding.ActivityMainBinding
-import com.example.digitron.navigationComponent.ShareUs
+import com.example.digitron.navigationComponent.AccountDetails
 import com.example.digitron.userentrance.EnteranceScreen
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -33,31 +32,41 @@ class MainActivity : AppCompatActivity(),OnMapReadyCallback{
         binding = ActivityMainBinding.inflate(layoutInflater)
         val view = binding.root
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayShowCustomEnabled(true)
+        supportActionBar?.setCustomView(R.layout.custom_action_bar)
         setContentView(view)
+
 
         binding.navigationView.setNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.account -> Toast.makeText(this,"hey",Toast.LENGTH_SHORT).show()
+                R.id.account -> startActivity(Intent(this,AccountDetails::class.java))
                 R.id.logout -> startActivity(Intent(this,EnteranceScreen::class.java))
-                R.id.share -> startActivity(Intent(this,ShareUs::class.java))
-            }
+                R.id.share ->{
+                    val sendIntent : Intent = Intent().apply {
+                        action = Intent.ACTION_SEND
+                        putExtra(Intent.EXTRA_TEXT,"Check out this : ")
+                        type = "text/plain"
+                    }
+                    val shareIntent = Intent.createChooser(sendIntent,"Share via")
+                    startActivity(shareIntent)
+                    }
+                }
             true
         }
 
-        val images = arrayOf(R.drawable.wd,R.drawable.dm,R.drawable.crm)
+        val images = arrayOf(R.drawable.wd,R.drawable.dm,R.drawable.c_r_m)
 
         val sliderAdapter = ImageAdapter(this,images)
         binding.sliderView.setSliderAdapter(sliderAdapter)
         binding.sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
         binding.sliderView.startAutoCycle()
 
-        actionBarDrawerToggle = ActionBarDrawerToggle(this,binding.drawerLayout,R.string.nav_open,R.string.nav_close)
+        actionBarDrawerToggle = ActionBarDrawerToggle(this,binding.drawerLayout,binding.toolbar,R.string.nav_open,R.string.nav_close)
         binding.drawerLayout.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
         mapFragment.getMapAsync(this)
-
 
 
     }
@@ -97,5 +106,13 @@ class MainActivity : AppCompatActivity(),OnMapReadyCallback{
             return false
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)){
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+        }else{
+            super.onBackPressed()
+        }
     }
 }

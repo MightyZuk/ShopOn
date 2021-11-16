@@ -23,6 +23,10 @@ class ProductView : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setContentView(view)
 
+        val intent = intent.getIntExtra("image",0)
+
+        binding.productImage.setImageResource(intent)
+
         binding.details.text = "* The company Leads Extractor tool can smartly collect bulk customer data for digital marketing purposes.\n" +
                 "* Extracts all email addresses and phone numbers from the source.\n" +
                 "* This extractor is the FASTEST Software available on the internet.\n" +
@@ -59,6 +63,11 @@ class ProductView : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onNavigateUp(): Boolean {
+        finish()
+        return true
     }
 
 }

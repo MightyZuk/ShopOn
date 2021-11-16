@@ -14,7 +14,8 @@
         android:layout_marginTop="10dp"
         android:layout_centerHorizontal="true"
         android:layout_height="160dp"
-        android:src="@drawable/google" />
+        android:src="@drawable/google"
+        android:contentDescription="TODO" />
 
     <TextView
         android:id="@+id/category"

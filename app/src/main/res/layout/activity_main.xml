@@ -4,144 +4,162 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    tools:context=".MainActivity"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    tools:openDrawer="start"
     android:background="@color/white"
     >
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:background="@color/white"
+            app:title="Digitron Global"
+            app:titleMarginStart="20dp"
+            app:titleTextColor="@color/red"
+            app:logo="@drawable/ic_digitron"
+            android:layout_height="?attr/actionBarSize"
+            tools:ignore="RtlSymmetry" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/products"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/products"
+                android:textSize="12sp"
+                android:textAlignment="center"
+                android:onClick="products"
+                android:backgroundTint="@color/light_blue"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@+id/sliderView"
+                app:layout_constraintEnd_toStartOf="@+id/about_us"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="OnClick,UsingOnClickInXml" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/about_us"
+                android:backgroundTint="@color/light_blue"
+                android:textSize="12sp"
+                android:textAlignment="center"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/about_us"
+                android:onClick="aboutUs"
+                tools:ignore="OnClick,UsingOnClickInXml"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@+id/sliderView"
+                app:layout_constraintEnd_toStartOf="@+id/contact_us"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/products"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/contact_us"
+                android:layout_width="wrap_content"
+                android:backgroundTint="@color/light_blue"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_us"
+                android:textSize="12sp"
+                android:textAlignment="center"
+                android:onClick="contactUs"
+                android:textColor="@color/black"
+                tools:ignore="OnClick,UsingOnClickInXml"
+                app:layout_constraintBottom_toTopOf="@+id/sliderView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintStart_toEndOf="@+id/about_us"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.smarteist.autoimageslider.SliderView
+                android:id="@+id/sliderView"
+                android:layout_width="fill_parent"
+                android:layout_height="300dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.148"
+                app:sliderAnimationDuration="300"
+                app:sliderAutoCycleDirection="right"
+                app:sliderScrollTimeInSec="2"
+                app:sliderAutoCycleEnabled="true"
+                app:sliderStartAutoCycle="true" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/extendedFloatingActionButton"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/red"
+                android:text="@string/shop_now"
+                android:textAlignment="viewEnd"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:onClick="shopNow"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.45"
+                app:shapeAppearanceOverlay="@style/fabShape"
+                tools:ignore="OnClick,RtlSymmetry,UsingOnClickInXml" />
+
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/whatsappLink"
+                android:layout_width="140dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/red"
+                android:onClick="takeMeToWhatsapp"
+                app:icon="@drawable/whatsapp_logo"
+                app:iconSize="40dp"
+                app:iconTint="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.904"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/sliderView"
+                app:layout_constraintVertical_bias="0.864"
+                app:shapeAppearanceOverlay="@style/fabShape"
+                tools:ignore="RtlSymmetry,UsingOnClickInXml,SpeakableTextPresentCheck" />
+
+            <fragment
+                android:id="@+id/mapView"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="360dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/extendedFloatingActionButton"
+                app:layout_constraintVertical_bias="1.0" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </LinearLayout>
 
     <com.google.android.material.navigation.NavigationView
         android:id="@+id/navigationView"
         android:layout_width="wrap_content"
         android:layout_gravity="start"
         app:itemIconTint="@color/red"
+        android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_layout"
         app:menu="@menu/user_page"
         android:layout_height="match_parent" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/white">
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/products"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/products"
-        android:textSize="12sp"
-        android:textAlignment="center"
-        android:onClick="products"
-        android:backgroundTint="@color/light_blue"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/sliderView"
-        app:layout_constraintEnd_toStartOf="@+id/about_us"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="OnClick,UsingOnClickInXml" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/about_us"
-        android:backgroundTint="@color/light_blue"
-        android:textSize="12sp"
-        android:textAlignment="center"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/about_us"
-        android:onClick="aboutUs"
-        tools:ignore="OnClick,UsingOnClickInXml"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/sliderView"
-        app:layout_constraintEnd_toStartOf="@+id/contact_us"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/products"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/contact_us"
-        android:layout_width="wrap_content"
-        android:backgroundTint="@color/light_blue"
-        android:layout_height="wrap_content"
-        android:text="@string/contact_us"
-        android:textSize="12sp"
-        android:textAlignment="center"
-        android:onClick="contactUs"
-        android:textColor="@color/black"
-        tools:ignore="OnClick,UsingOnClickInXml"
-        app:layout_constraintBottom_toTopOf="@+id/sliderView"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/about_us"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.smarteist.autoimageslider.SliderView
-        android:id="@+id/sliderView"
-        android:layout_width="fill_parent"
-        android:layout_height="300dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.148"
-        app:sliderAnimationDuration="300"
-        app:sliderAutoCycleDirection="right"
-        app:sliderScrollTimeInSec="2"
-        app:sliderAutoCycleEnabled="true"
-        app:sliderStartAutoCycle="true" />
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/extendedFloatingActionButton"
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/red"
-        android:text="@string/shop_now"
-        android:textAlignment="viewEnd"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        android:onClick="shopNow"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.45"
-        app:shapeAppearanceOverlay="@style/fabShape"
-        tools:ignore="OnClick,RtlSymmetry,UsingOnClickInXml" />
-
-
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-        android:id="@+id/whatsappLink"
-        android:layout_width="140dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="@color/red"
-        android:onClick="takeMeToWhatsapp"
-        app:icon="@drawable/whatsapp_logo"
-        app:iconSize="40dp"
-        app:iconTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.904"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/sliderView"
-        app:layout_constraintVertical_bias="0.864"
-        app:shapeAppearanceOverlay="@style/fabShape"
-        tools:ignore="RtlSymmetry,UsingOnClickInXml,SpeakableTextPresentCheck" />
-
-    <fragment
-        android:id="@+id/mapView"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="match_parent"
-        android:layout_height="360dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/extendedFloatingActionButton"
-        app:layout_constraintVertical_bias="1.0" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.drawerlayout.widget.DrawerLayout>

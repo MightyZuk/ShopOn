@@ -16,10 +16,6 @@
         android:theme="@style/Theme.Digitron"
         tools:ignore="AllowBackup" >
         <activity
-            android:name=".navigationComponent.ShareUs"
-            android:parentActivityName=".MainActivity"
-            android:exported="false" />
-        <activity
             android:name=".navigationComponent.AccountDetails"
             android:exported="false"
             android:parentActivityName=".MainActivity" />
@@ -63,6 +59,7 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
+            android:theme="@style/Theme.Digitron.NoActionBar"
             android:exported="true" />
     </application>
 

@@ -28,6 +28,7 @@
     <style name="Theme.Digitron.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="android:statusBarColor">@color/red</item>
     </style>
     <style name="Theme.Digitron.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
     <style name="Theme.Digitron.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
