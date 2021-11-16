@@ -1,0 +1,54 @@
+<resources>
+    <string name="app_name">Digitron Global</string>
+    <string name="digitron_global">Digitron Global</string>
+    <string name="shop_now">SHOP NOW</string>
+    <string name="home">Home</string>
+    <string name="products">Products</string>
+    <string name="about_us">About Us</string>
+    <string name="contact_us">Contact Us</string>
+    <string name="details">
+        DIGITRON SOFTWARES is  known as reputed name in the IT industry in NAGPUR(INDIA). A decade of services and solutions par excellence, the huge clientele base with complete customer satisfaction is our motto. Once having worked with us, it is impossible to expect such quality and professionalism elsewhere. Our sheer dedication and expertise has made us a commendable entity in the web development sector and our motto is all-inclusive development with customer satisfaction. Our goal is overarching growth and making a paramount service development entity which caters to all kinds of needs of the customers.
+    </string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="please_enter_name">Please Enter name</string>
+    <string name="email">email</string>
+    <string name="comment_or_message">Comment or message</string>
+    <string name="enter_name_here">Enter Name Here</string>
+    <string name="send_us">Send Us</string>
+    <string name="http_digitronsoftwaresandtechnology_com">digitronsoftwaresandtechnology.com</string>
+    <string name="sales_digitronglobal_com">sales@digitronglobal.com</string>
+    <string name="md_digitronglobal_com">MD@digitronglobal.com</string>
+    <string name="_91_7709266577">+91 7709266577</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="sort">Sort</string>
+    <string name="filter">Filter</string>
+    <string name="nav_close">Close</string>
+    <string name="nav_open">Open</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Settings</string>
+
+    <string name="menu_transform">Transform</string>
+    <string name="menu_reflow">Reflow</string>
+    <string name="menu_slideshow">Slideshow</string>
+    <string name="menu_settings">Settings</string>
+
+    <string name="lorem_ipsum_title">Lorem Ipsum"</string>
+    <string name="lorem_ipsum">Lorem Ipsum is simply placeholder text of the printing and
+        typesetting industry. Lorem Ipsum has been the industry\'s standard placeholder text ever
+        since the 1500s, when an unknown printer took a galley of type and scrambled it to make a
+        type specimen book"
+    </string>
+</resources>
