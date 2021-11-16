@@ -21,6 +21,7 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".productFiles.Cart"
+            android:parentActivityName=".productFiles.ProductView"
             android:exported="false" />
 
         <meta-data
@@ -29,6 +30,7 @@
 
         <activity
             android:name=".productFiles.ProductView"
+            android:parentActivityName=".ProductsPage"
             android:exported="false" />
         <activity
             android:name=".userentrance.SignUp"

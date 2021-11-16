@@ -65,9 +65,4 @@ class ProductView : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onNavigateUp(): Boolean {
-        finish()
-        return true
-    }
-
 }

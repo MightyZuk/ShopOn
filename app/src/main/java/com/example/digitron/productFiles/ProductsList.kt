@@ -9,11 +9,14 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.SortedList
 import com.example.digitron.R
 import com.example.digitron.databinding.ProductsListBinding
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ProductsList(private val context: Context,
-                   private val list: MutableList<Int>): RecyclerView.Adapter<ProductsList.ItemViewHolder>() {
+                   private val list: ArrayList<Int>): RecyclerView.Adapter<ProductsList.ItemViewHolder>() {
 
     private lateinit var binding : ProductsListBinding
 
@@ -37,6 +40,5 @@ class ProductsList(private val context: Context,
     override fun getItemCount(): Int {
         return list.size
     }
-
 
 }

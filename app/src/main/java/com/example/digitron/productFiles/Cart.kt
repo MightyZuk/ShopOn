@@ -3,6 +3,8 @@ package com.example.digitron.productFiles
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
+import androidx.core.app.NavUtils
 import com.example.digitron.ProductsPage
 import com.example.digitron.R
 import com.example.digitron.databinding.ActivityCartBinding
@@ -19,4 +21,5 @@ class Cart : AppCompatActivity() {
             Intent(this,ProductsPage::class.java).also { startActivity(it) }
         }
     }
+
 }

@@ -7,12 +7,15 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.SortedList
 import com.example.digitron.databinding.ActivityProductsPageBinding
 import com.example.digitron.productFiles.Cart
 import com.example.digitron.productFiles.ProductsList
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ProductsPage : AppCompatActivity() {
+
+    private lateinit var images: ArrayList<Int>
 
 
     @SuppressLint("NotifyDataSetChanged")
@@ -23,7 +26,7 @@ class ProductsPage : AppCompatActivity() {
         supportActionBar?.title = "Products"
         setContentView(view)
 
-        val images = mutableListOf(R.drawable.billing_software,R.drawable.aap,R.drawable.`as`,R.drawable.cle,
+        images  = arrayListOf(R.drawable.billing_software,R.drawable.aap,R.drawable.`as`,R.drawable.cle,
         R.drawable.c_r_m,R.drawable.cs,R.drawable.cwd,R.drawable.dw,R.drawable.eapwe,R.drawable.dwd,R.drawable.ecommerce_website_promotion,
         R.drawable.elearning,R.drawable.elearning_portal_development,R.drawable.em,R.drawable.email_verifier,R.drawable.es,
         R.drawable.ess,R.drawable.ew,R.drawable.ewd,R.drawable.fad,R.drawable.fle,R.drawable.ga,R.drawable.google_maps_lead_extractor,
@@ -31,6 +34,9 @@ class ProductsPage : AppCompatActivity() {
         R.drawable.iso,R.drawable.mam,R.drawable.mlm,R.drawable.mn,R.drawable.rnad,R.drawable.rspd,R.drawable.saps,
         R.drawable.seo,R.drawable.smapep,R.drawable.smm,R.drawable.smo,R.drawable.static_website,R.drawable.swd,R.drawable.wb,
         R.drawable.wdp)
+
+
+        images.sort()
 
         val productsListAdapter = ProductsList(this,images)
         binding.listItem.layoutManager = GridLayoutManager(this,2)
