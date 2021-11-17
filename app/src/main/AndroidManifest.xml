@@ -21,7 +21,6 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".productFiles.Cart"
-            android:parentActivityName=".productFiles.ProductView"
             android:exported="false" />
 
         <meta-data

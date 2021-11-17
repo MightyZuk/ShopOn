@@ -2,43 +2,72 @@ package com.example.digitron
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.SortedList
+import com.example.digitron.database.ProductDetails
+import com.example.digitron.database.ProductsViewModel
 import com.example.digitron.databinding.ActivityProductsPageBinding
+import com.example.digitron.databinding.BottomSheetBinding
+import com.example.digitron.databinding.FilterBottomSheetBinding
 import com.example.digitron.productFiles.Cart
 import com.example.digitron.productFiles.ProductsList
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class ProductsPage : AppCompatActivity() {
 
-    private lateinit var images: ArrayList<Int>
-
+    private lateinit var images: Array<Int>
+    private lateinit var titles: Array<String>
+    private lateinit var viewModel: ProductsViewModel
+    private lateinit var productsListAdapter: ProductsList
+    private lateinit var list: MutableList<ProductDetails>
+    private lateinit var binding: ActivityProductsPageBinding
 
     @SuppressLint("NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityProductsPageBinding.inflate(layoutInflater)
+        binding = ActivityProductsPageBinding.inflate(layoutInflater)
         val view = binding.root
         supportActionBar?.title = "Products"
         setContentView(view)
 
-        images  = arrayListOf(R.drawable.billing_software,R.drawable.aap,R.drawable.`as`,R.drawable.cle,
-        R.drawable.c_r_m,R.drawable.cs,R.drawable.cwd,R.drawable.dw,R.drawable.eapwe,R.drawable.dwd,R.drawable.ecommerce_website_promotion,
-        R.drawable.elearning,R.drawable.elearning_portal_development,R.drawable.em,R.drawable.email_verifier,R.drawable.es,
-        R.drawable.ess,R.drawable.ew,R.drawable.ewd,R.drawable.fad,R.drawable.fle,R.drawable.ga,R.drawable.google_maps_lead_extractor,
-        R.drawable.had,R.drawable.hospital_management_software,R.drawable.iad,R.drawable.indiamart,R.drawable.imssoftware,
-        R.drawable.iso,R.drawable.mam,R.drawable.mlm,R.drawable.mn,R.drawable.rnad,R.drawable.rspd,R.drawable.saps,
-        R.drawable.seo,R.drawable.smapep,R.drawable.smm,R.drawable.smo,R.drawable.static_website,R.drawable.swd,R.drawable.wb,
-        R.drawable.wdp)
+        images  = arrayOf(R.drawable.`as`,R.drawable.aap,R.drawable.billing_software,R.drawable.email_verifier,
+            R.drawable.wb,R.drawable.cle,R.drawable.c_r_m,R.drawable.cs,R.drawable.cwd,R.drawable.dbc,R.drawable.dwd,R.drawable.dw,
+            R.drawable.ewd,R.drawable.ew,R.drawable.elearning,R.drawable.elearning_portal_development,R.drawable.ecommerce_website_promotion,
+            R.drawable.es,R.drawable.eapwe,R.drawable.em,R.drawable.ess,R.drawable.fle,R.drawable.fad,R.drawable.ga,R.drawable.google_maps_lead_extractor,
+            R.drawable.hospital_management_software,R.drawable.had,R.drawable.indiamart,R.drawable.iad,R.drawable.iso,
+            R.drawable.mlm,R.drawable.mam,R.drawable.mn,R.drawable.rnad,R.drawable.rspd,R.drawable.saps,
+            R.drawable.seo,R.drawable.smapep,R.drawable.smm,R.drawable.smo,R.drawable.static_website,R.drawable.swd,R.drawable.wb,
+            R.drawable.wdp)
+
+        titles = arrayOf("Accommodation Software","Android App Development","Billing Software","Bulk Email Verifier","Bulk Messenger","Company Lead Extractor",
+        "CRM","Custom Software","Custom Web Designing","Digital Business Card","Dynamic Web Designing","Dynamic Website","E-commerce Web Designing","E-commerce Website",
+        "E-learning app","E-learning Portal Development","Ecommerce Website Promotion","Educational Software","Email & Phone Web Extractor","Email Marketing",
+        "Enterprise Software Solution","Facebook Lead Extractor","Flutter App Development","Google Adwords","Googlemap Lead Extractor","Hospital Management Software",
+        "Hybrid App Development","Indiamart Extractor","Iconic App Development","Ios App Development","Just Dial Data Extractor","Linkedin Extractor","LMS Software",
+        "MLM Software","Mobile App Maintenance","Mobile Number Lookup","React Native App Development","Real Estate Portal Development","Sales & Purchase Software",
+        "SEO Marketing","Social Email Phone Extractor Pro","Social Media Marketing","Static Web Designing","Static Website","TradeIndia Lead Extractor","Transportation Software",
+        "Web Portal Development")
+
+        list = ArrayList()
+        images.sortedArray()
+        titles.sortedArray()
+
+        viewModel = ViewModelProvider(this)[ProductsViewModel::class.java]
+        var price = 0
+
+        for ((id, i) in (images.indices).withIndex()){
+            val product = ProductDetails(id,images[i],titles[i],"Mobile","description","Highlights",price++)
+            list.add(product)
+            viewModel.addProducts(product)
+        }
 
 
-        images.sort()
+        productsListAdapter = ProductsList(this,list)
 
-        val productsListAdapter = ProductsList(this,images)
         binding.listItem.layoutManager = GridLayoutManager(this,2)
         binding.listItem.adapter = productsListAdapter
 
@@ -54,7 +83,7 @@ class ProductsPage : AppCompatActivity() {
         when(item.itemId){
             R.id.shoppingBag -> {
                 Intent(this,Cart::class.java).also { startActivity(it) }
-                return true
+                return false
             }
         }
         return super.onOptionsItemSelected(item)
@@ -62,14 +91,30 @@ class ProductsPage : AppCompatActivity() {
 
     fun filterBottomSheet(view: android.view.View) {
         val bottomSheetDialog = BottomSheetDialog(this)
-        bottomSheetDialog.setContentView(R.layout.filter_bottom_sheet)
+        val bind = FilterBottomSheetBinding.inflate(layoutInflater)
+        bottomSheetDialog.setContentView(bind.root)
         bottomSheetDialog.show()
+
+
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun sortBottomSheet(view: android.view.View) {
         val bottom = BottomSheetDialog(this)
-        bottom.setContentView(R.layout.bottom_sheet)
+        val bind = BottomSheetBinding.inflate(layoutInflater)
+        bottom.setContentView(bind.root)
         bottom.show()
+        bind.sortGroup.setOnCheckedChangeListener { group, _ ->
+            when(group.checkedRadioButtonId){
+                R.id.popularity ->{
+                    list.reverse()
+                }
+                R.id.latest ->{
+                    list.reverse() }
+            }
+            binding.listItem.adapter = productsListAdapter
+//            bottom.hide()
+        }
     }
 
 }

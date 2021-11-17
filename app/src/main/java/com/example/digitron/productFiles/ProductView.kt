@@ -23,9 +23,13 @@ class ProductView : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         setContentView(view)
 
-        val intent = intent.getIntExtra("image",0)
+        val image = intent.getIntExtra("image",0)
+        val text = intent.getStringExtra("title")
+        val price = intent.getIntExtra("price",0)
+        binding.title.text = text.toString()
 
-        binding.productImage.setImageResource(intent)
+        binding.productImage.setImageResource(image)
+        binding.price.text = "₹ $price"
 
         binding.details.text = "* The company Leads Extractor tool can smartly collect bulk customer data for digital marketing purposes.\n" +
                 "* Extracts all email addresses and phone numbers from the source.\n" +
@@ -51,7 +55,7 @@ class ProductView : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu,menu)
+        menuInflater.inflate(R.menu.product_view_menu,menu)
         return true
     }
 

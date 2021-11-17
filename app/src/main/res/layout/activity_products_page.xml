@@ -16,11 +16,10 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
     <LinearLayout
-        android:background="@drawable/rectangle_back"
         android:id="@+id/linearLayout"
-        android:showDividers="middle"
-        android:paddingTop="2dp"
-        android:divider="@color/red"
+        android:paddingTop="1dp"
+        android:paddingBottom="1dp"
+        android:background="@color/red"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -28,17 +27,18 @@
         app:layout_constraintVertical_bias="0.0"
         android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:elevation="10dp"
         android:layout_height="wrap_content">
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/sort"
             android:paddingBottom="5dp"
             app:iconSize="20dp"
-            android:layout_marginStart="2dp"
+            android:layout_gravity="center"
             android:onClick="sortBottomSheet"
             app:iconTint="@color/red"
-            android:background="@drawable/rectangle_back"
             app:iconGravity="textStart"
+            android:background="@color/white"
             app:icon="@drawable/sort_image"
             android:text="@string/sort"
             android:textColor="@color/red"
@@ -53,7 +53,6 @@
             android:id="@+id/filter"
             app:iconTint="@color/red"
             app:iconGravity="textStart"
-            android:background="@drawable/rectangle_back"
             app:icon="@drawable/filter_list"
             app:iconSize="20dp"
             android:onClick="filterBottomSheet"
@@ -61,6 +60,7 @@
             android:textColor="@color/red"
             android:textAllCaps="false"
             android:textSize="17sp"
+            android:background="@color/white"
             android:paddingBottom="5dp"
             android:layout_weight="1"
             android:layout_width="wrap_content"

@@ -22,7 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.smarteist.autoimageslider.SliderAnimations
 
 
-class MainActivity : AppCompatActivity(),OnMapReadyCallback{
+class MainActivity : AppCompatActivity(){
 
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var binding: ActivityMainBinding
@@ -65,8 +65,7 @@ class MainActivity : AppCompatActivity(),OnMapReadyCallback{
         binding.drawerLayout.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
 
-        val mapFragment = supportFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
-        mapFragment.getMapAsync(this)
+
 
 
     }
@@ -92,14 +91,6 @@ class MainActivity : AppCompatActivity(),OnMapReadyCallback{
         startActivity(Intent(Intent.ACTION_VIEW,whatsappUrl))
     }
 
-    override fun onMapReady(map: GoogleMap) {
-        map.addMarker(MarkerOptions().position(LatLng(21.126110238943085, 79.13540831252685))
-            .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED))
-            .title("Digitron Software & Technology"))
-        Log.d("error","Error")
-        map.moveCamera(CameraUpdateFactory
-            .newLatLngZoom(LatLng(21.126110238943085, 79.13540831252685),14F))
-    }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (actionBarDrawerToggle.onOptionsItemSelected(item)) {

@@ -128,7 +128,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/sendUs"
-        app:layout_constraintVertical_bias="0.17"
+        app:layout_constraintVertical_bias="0.6"
         app:layout_constraintWidth_percent="0.9">
 
         <LinearLayout
@@ -192,7 +192,6 @@
 
             <TextView
                 android:id="@+id/mdEmail"
-                android:onClick="takeMeToMDEmail"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="2"
@@ -202,7 +201,6 @@
 
             <TextView
                 android:id="@+id/salesEmail"
-                android:onClick="takeMeToSalesEmail"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="2"
@@ -212,10 +210,10 @@
 
             <TextView
                 android:id="@+id/websiteUrl"
-                android:onClick="takeMeToWebsite"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="2"
+                android:onClick="takeMeToWebsite"
                 android:text="@string/http_digitronsoftwaresandtechnology_com"
                 android:textColor="#287EF8"
                 android:textSize="15sp" />
@@ -235,10 +233,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.08"
+        app:layout_constraintHorizontal_bias="0.113"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.278"
+        app:layout_constraintVertical_bias="0.139"
         tools:ignore="HardcodedText" />
 
     <ImageView
@@ -254,7 +252,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         app:layout_constraintVertical_bias="0.201"
-        app:layout_constraintWidth_percent="0.1" />
+        app:layout_constraintWidth_percent="0.1"
+        tools:ignore="UsingOnClickInXml" />
 
     <ImageView
         android:id="@+id/instagram"
@@ -299,6 +298,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/indeed"
         app:layout_constraintVertical_bias="0.333"
-        app:layout_constraintWidth_percent="0.1" />
+        app:layout_constraintWidth_percent="0.1"
+        tools:ignore="UsingOnClickInXml" />
+
+    <fragment
+        android:id="@+id/mapView"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="206dp"
+        android:layout_height="160dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.909"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/message"
+        app:layout_constraintVertical_bias="0.049" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
