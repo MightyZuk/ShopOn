@@ -7,7 +7,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.ActionBar
+import androidx.core.text.trimmedLength
 import com.example.digitron.ProductsPage
 import com.example.digitron.R
 import com.example.digitron.databinding.ActivityProductViewBinding
@@ -44,9 +46,19 @@ class ProductView : AppCompatActivity() {
                 "* Multithreaded process for faster intelligent extraction.\n" +
                 "* Automatic updates are with new features and settings instantly.\n" +
                 "* The software has options to START – PAUSE – STOPin running mode.\n" +
-                "* Users can export collected data into CSV or excel file format"
+                "* Users can export collected data into CSV or excel file format."
 
         binding.descript.text = "Ecommerce website design is the process of creating an online store for your business to sell digitally to target consumers. To design an e-commerce website, you need to plan, conceptualize, and arrange your content and products for effective display on the Internet."
+
+        binding.card.setOnClickListener {
+            if (binding.details.maxLines <= 8){
+                binding.details.setLines(35)
+                binding.details.setEms(0)
+            }else{
+                binding.details.setLines(8)
+                binding.details.setEms(3)
+            }
+        }
 
         binding.buyNow.setOnClickListener {
             startActivity(Intent(this,Cart::class.java))
@@ -54,7 +66,7 @@ class ProductView : AppCompatActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.product_view_menu,menu)
         return true
     }

@@ -2,9 +2,14 @@ package com.example.digitron
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.RadioButton
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -16,11 +21,14 @@ import com.example.digitron.databinding.FilterBottomSheetBinding
 import com.example.digitron.productFiles.Cart
 import com.example.digitron.productFiles.ProductsList
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import java.util.*
+import kotlin.collections.ArrayList
 
 class ProductsPage : AppCompatActivity() {
 
     private lateinit var images: Array<Int>
     private lateinit var titles: Array<String>
+    private lateinit var category: Array<String>
     private lateinit var viewModel: ProductsViewModel
     private lateinit var productsListAdapter: ProductsList
     private lateinit var list: MutableList<ProductDetails>
@@ -52,6 +60,12 @@ class ProductsPage : AppCompatActivity() {
         "SEO Marketing","Social Email Phone Extractor Pro","Social Media Marketing","Static Web Designing","Static Website","TradeIndia Lead Extractor","Transportation Software",
         "Web Portal Development")
 
+        category = arrayOf("Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web",
+            "Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web",
+            "Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web",
+            "Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web",
+            "Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web")
+
         list = ArrayList()
         images.sortedArray()
         titles.sortedArray()
@@ -60,7 +74,7 @@ class ProductsPage : AppCompatActivity() {
         var price = 0
 
         for ((id, i) in (images.indices).withIndex()){
-            val product = ProductDetails(id,images[i],titles[i],"Mobile","description","Highlights",price++)
+            val product = ProductDetails(id,images[i],titles[i],category[i],"description","Highlights",price++)
             list.add(product)
             viewModel.addProducts(product)
         }
@@ -74,7 +88,7 @@ class ProductsPage : AppCompatActivity() {
 
     }
 
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu,menu)
         return true
     }
@@ -89,32 +103,148 @@ class ProductsPage : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    @SuppressLint("CommitPrefEdits")
     fun filterBottomSheet(view: android.view.View) {
         val bottomSheetDialog = BottomSheetDialog(this)
         val bind = FilterBottomSheetBinding.inflate(layoutInflater)
         bottomSheetDialog.setContentView(bind.root)
         bottomSheetDialog.show()
 
+        val sharedPreferences = getSharedPreferences("id", MODE_PRIVATE)
+        val radioButton = sharedPreferences.getInt("radioButton",0)
+        val editor = sharedPreferences.edit()
 
+
+        when (radioButton) {
+            0 -> {
+                bind.dataExtractor.isChecked = true
+            }
+            1 -> {
+                bind.digitalMarketing.isChecked = true
+            }
+            2 -> {
+                bind.mobile.isChecked = true
+            }
+            3 -> {
+                bind.mobileApp.isChecked = true
+            }
+            4 -> {
+                bind.mobileAppDevelopment.isChecked = true
+            }
+            5 -> {
+                bind.software.isChecked = true
+            }
+            6 -> {
+                bind.uncategorized.isChecked = true
+            }
+            7 -> {
+                bind.webDevelopment.isChecked = true
+            }
+            8 -> {
+                bind.website.isChecked = true
+            }
+            else -> {
+                bind.websiteDesigning.isChecked = true
+            }
+        }
+
+        bind.sortGroup.setOnCheckedChangeListener { _, checkedId ->
+            when(checkedId){
+                R.id.dataExtractor ->{
+                    editor.putInt("radioButton",0)
+                    list.sortBy { it.category.contains("Data Extractor") }
+                }
+                R.id.digitalMarketing ->{
+                    editor.putInt("radioButton",1)
+                    list.sortBy { it.category.contains("Digital Marketing") }
+                }
+                R.id.mobile ->{
+                    editor.putInt("radioButton",2)
+                    list.sortBy { it.category.contains("Mobile") }
+                }
+                R.id.mobileApp ->{
+                    editor.putInt("radioButton",3)
+                    list.sortBy { it.category.contains("Mobile App")}
+                }
+                R.id.mobileAppDevelopment ->{
+                    editor.putInt("radioButton",4)
+                    list.sortBy { it.category.contains("Mobile App Development") }
+                }
+                R.id.software ->{
+                    editor.putInt("radioButton",5)
+                    list.sortBy { it.category.contains("Software") }
+                }
+                R.id.uncategorized ->{
+                    editor.putInt("radioButton",6)
+                    list.sortBy { it.category.contains("Uncategorized")}
+                }
+                R.id.webDevelopment ->{
+                    editor.putInt("radioButton",7)
+                    list.sortBy { it.category.contains("Web Development") }
+                }
+                R.id.website ->{
+                    editor.putInt("radioButton",8)
+                    list.sortBy { it.category.contains("Website") }
+                }
+                R.id.websiteDesigning ->{
+                    editor.putInt("radioButton",9)
+                    list.sortBy { it.category.contains("Website Designing") }
+                }
+
+            }
+            editor.apply()
+            binding.listItem.adapter = productsListAdapter
+            Handler(Looper.getMainLooper()).postDelayed({bottomSheetDialog.hide()},400)
+        }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     fun sortBottomSheet(view: android.view.View) {
         val bottom = BottomSheetDialog(this)
         val bind = BottomSheetBinding.inflate(layoutInflater)
         bottom.setContentView(bind.root)
         bottom.show()
-        bind.sortGroup.setOnCheckedChangeListener { group, _ ->
-            when(group.checkedRadioButtonId){
-                R.id.popularity ->{
-                    list.reverse()
-                }
-                R.id.latest ->{
-                    list.reverse() }
+
+        val sharedPreferences = getSharedPreferences("id", MODE_PRIVATE)
+        val radioButton = sharedPreferences.getInt("radioButton",0)
+        val editor = sharedPreferences.edit()
+
+        when (radioButton) {
+            0 -> {
+                bind.popularity.isChecked = true
             }
+            1 -> {
+                bind.latest.isChecked = true
+            }
+            2 -> {
+                bind.lowToHigh.isChecked = true
+            }
+            else -> {
+                bind.highToLow.isChecked = true
+            }
+        }
+
+        bind.sortGroup.setOnCheckedChangeListener { _, checkedId ->
+            when(checkedId){
+                R.id.popularity ->{
+                    editor.putInt("radioButton",0)
+                    list.sortBy { it.title }
+                }
+                R.id.latest -> {
+                    editor.putInt("radioButton",1)
+                    list.sortByDescending { it.title }
+                }
+                R.id.lowToHigh -> {
+                    editor.putInt("radioButton",2)
+                    list.sortBy { it.price }
+                }
+                R.id.highToLow -> {
+                    editor.putInt("radioButton",3)
+                    list.sortByDescending { it.price }
+                }
+            }
+            editor.apply()
             binding.listItem.adapter = productsListAdapter
-//            bottom.hide()
+            Handler(Looper.getMainLooper()).postDelayed({bottom.hide()},400)
         }
     }
-
 }

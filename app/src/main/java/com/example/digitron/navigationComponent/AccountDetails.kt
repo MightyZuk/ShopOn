@@ -11,5 +11,6 @@ class AccountDetails : AppCompatActivity() {
         val view= binding.root
         supportActionBar?.title= "Accounts"
         setContentView(view)
+
     }
 }

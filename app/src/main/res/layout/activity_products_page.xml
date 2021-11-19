@@ -19,7 +19,7 @@
         android:id="@+id/linearLayout"
         android:paddingTop="1dp"
         android:paddingBottom="1dp"
-        android:background="@color/red"
+        android:background="@color/white"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"

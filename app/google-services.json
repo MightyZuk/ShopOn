@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "135103706028",
+    "project_id": "digitron-4697e",
+    "storage_bucket": "digitron-4697e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:135103706028:android:64f55a75d86ce39dbc4009",
+        "android_client_info": {
+          "package_name": "com.example.digitron"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "135103706028-f149codkbt5sulv6qcnq10eki6usrd3h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.digitron",
+            "certificate_hash": "1775e8fe5301960450b18f7a7f673df415da1147"
+          }
+        },
+        {
+          "client_id": "135103706028-prdqp7lt9d5uuvg0fciev1erteeh47qr.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARWCWv5FMiG4s4sib85bvJiFfJKxtCVJk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "135103706028-prdqp7lt9d5uuvg0fciev1erteeh47qr.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

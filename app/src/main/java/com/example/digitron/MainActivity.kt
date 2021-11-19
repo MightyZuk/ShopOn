@@ -19,6 +19,8 @@ import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.smarteist.autoimageslider.SliderAnimations
 
 
@@ -40,7 +42,10 @@ class MainActivity : AppCompatActivity(){
         binding.navigationView.setNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.account -> startActivity(Intent(this,AccountDetails::class.java))
-                R.id.logout -> startActivity(Intent(this,EnteranceScreen::class.java))
+                R.id.logout -> {
+                    Firebase.auth.signOut()
+                    startActivity(Intent(this,EnteranceScreen::class.java))
+                }
                 R.id.share ->{
                     val sendIntent : Intent = Intent().apply {
                         action = Intent.ACTION_SEND
