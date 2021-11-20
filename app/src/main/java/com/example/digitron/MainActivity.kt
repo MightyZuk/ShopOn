@@ -12,6 +12,7 @@ import androidx.core.view.GravityCompat
 import com.example.digitron.databinding.ActivityMainBinding
 import com.example.digitron.navigationComponent.AccountDetails
 import com.example.digitron.userentrance.EnteranceScreen
+import com.example.digitron.userentrance.SignIn
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -43,8 +44,9 @@ class MainActivity : AppCompatActivity(){
             when(it.itemId){
                 R.id.account -> startActivity(Intent(this,AccountDetails::class.java))
                 R.id.logout -> {
+                    val user = Firebase.auth.currentUser
                     Firebase.auth.signOut()
-                    startActivity(Intent(this,EnteranceScreen::class.java))
+                    startActivity(Intent(this,SignIn::class.java))
                 }
                 R.id.share ->{
                     val sendIntent : Intent = Intent().apply {
@@ -69,8 +71,6 @@ class MainActivity : AppCompatActivity(){
         actionBarDrawerToggle = ActionBarDrawerToggle(this,binding.drawerLayout,binding.toolbar,R.string.nav_open,R.string.nav_close)
         binding.drawerLayout.addDrawerListener(actionBarDrawerToggle)
         actionBarDrawerToggle.syncState()
-
-
 
 
     }
@@ -108,7 +108,11 @@ class MainActivity : AppCompatActivity(){
         if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)){
             binding.drawerLayout.closeDrawer(GravityCompat.START)
         }else{
-            super.onBackPressed()
+            finishAffinity()
         }
+    }
+
+    fun sliderView(view: android.view.View) {
+        startActivity(Intent(this,ProductsPage::class.java))
     }
 }

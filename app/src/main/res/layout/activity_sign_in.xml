@@ -6,6 +6,17 @@
     android:layout_height="match_parent"
     tools:context=".userentrance.SignIn">
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:visibility="gone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textView8"
         android:layout_width="wrap_content"
@@ -54,9 +65,10 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintVertical_bias="0.058"
         tools:ignore="HardcodedText" />
 
     <ImageView
@@ -101,13 +113,13 @@
         android:id="@+id/username"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:background="@drawable/entrance_button"
         android:elevation="10dp"
         android:hint="Username or email"
         android:inputType="textEmailAddress"
-        android:singleLine="true"
-        android:background="@drawable/entrance_button"
         android:paddingStart="45dp"
         android:paddingEnd="45dp"
+        android:singleLine="true"
         android:textAlignment="textStart"
         android:textAllCaps="false"
         android:textColor="@color/black"
@@ -142,7 +154,7 @@
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/forgotPassword"
-        app:layout_constraintVertical_bias="0.22" />
+        app:layout_constraintVertical_bias="0.187" />
 
     <TextView
         android:id="@+id/textView5"
@@ -177,16 +189,27 @@
         app:layout_constraintTop_toTopOf="@+id/textView5"
         app:layout_constraintVertical_bias="0.0" />
 
-    <com.google.android.gms.common.SignInButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/googleSignIn"
-        android:layout_width="250dp"
+        android:layout_width="200dp"
+        android:backgroundTint="@color/light_blue"
+        app:cornerRadius="10dp"
+        android:padding="10dp"
+        app:iconTint="@color/red"
+        app:icon="@drawable/google_logo"
+        android:textColor="@color/black"
+        android:text="Sign in"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        app:iconSize="30dp"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4"
-        app:layout_constraintVertical_bias="0.018" />
+        app:layout_constraintVertical_bias="0.018"
+        tools:ignore="HardcodedText" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline8"
