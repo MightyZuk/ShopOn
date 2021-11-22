@@ -1,18 +1,19 @@
 package com.example.digitron.userentrance
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
+import android.app.Dialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.digitron.MainActivity
-import com.example.digitron.ProductsPage
 import com.example.digitron.R
-import com.example.digitron.databinding.ActivityMainBinding
 import com.example.digitron.databinding.ActivitySignInBinding
+import com.example.digitron.userDatabase.UserDao
+import com.example.digitron.userDatabase.UserDetails
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -26,15 +27,15 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
-import kotlin.time.Duration.Companion.days
 
 @DelicateCoroutinesApi
-class SignIn : AppCompatActivity() {
+class SignIn : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var googleSignInClient: GoogleSignInClient
     private lateinit var myAuth: FirebaseAuth
     private val RC_SIGN_IN = 0
     private lateinit var binding: ActivitySignInBinding
+    private lateinit var dialog: Dialog
 
     @SuppressLint("UseCompatLoadingForDrawables")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -52,30 +53,24 @@ class SignIn : AppCompatActivity() {
 
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        myAuth = Firebase.auth
+        myAuth = FirebaseAuth.getInstance()
 
-        binding.googleSignIn.setOnClickListener{
-            signIn()
-        }
+        binding.forgotPassword.setOnClickListener(this)
+        binding.sigInButton.setOnClickListener(this)
+        binding.signUpLittle.setOnClickListener(this)
+        binding.googleSignIn.setOnClickListener(this)
+    }
 
-        binding.sigInButton.setOnClickListener {
-            startActivity(Intent(this,MainActivity::class.java))
-//            if (binding.username.text.toString() == user && binding.password.text.toString() == pass){
-//                Intent(this,MainActivity::class.java).also { startActivity(it) }
-//            }else if (binding.username.text.toString() != user && binding.password.text.toString() == pass){
-//                Toast.makeText(this,"Please Enter correct username",Toast.LENGTH_SHORT).show()
-//            }else if (binding.username.text.toString() == user && binding.password.text.toString() != pass){
-//                Toast.makeText(this,"Please Enter correct password",Toast.LENGTH_SHORT).show()
-//            }else if(binding.username.text.isEmpty() && binding.password.text!!.isEmpty()){
-//                TODO()
-//            }else{
-//                Toast.makeText(this,"Please enter correct username and password",Toast.LENGTH_SHORT).show()
-//            }
-        }
-
-        binding.signUpLittle.setOnClickListener {
-            Intent(this,SignUp::class.java).also { startActivity(it) }
-        }
+    private fun signInWithEmail(email: String,password: String) {
+        myAuth.signInWithEmailAndPassword(email,password)
+            .addOnCompleteListener {
+                if (it.isSuccessful){
+                    updateUi(myAuth.currentUser)
+                    finish()
+                }else{
+                    Toast.makeText(this,"failed",Toast.LENGTH_SHORT).show()
+                }
+            }
     }
 
     private fun signIn() {
@@ -103,18 +98,7 @@ class SignIn : AppCompatActivity() {
 
     private fun firebaseAuthWithGoogle(idToken: String?) {
         val credential = GoogleAuthProvider.getCredential(idToken,null)
-        binding.textView4.visibility = View.GONE
-        binding.textView8.visibility = View.GONE
-        binding.googleSignIn.visibility = View.GONE
-        binding.imageView2.visibility = View.GONE
-        binding.progressBar.visibility = View.GONE
-        binding.username.visibility = View.GONE
-        binding.password.visibility = View.GONE
-        binding.forgotPassword.visibility = View.GONE
-        binding.sigInButton.visibility = View.GONE
-        binding.signUpLittle.visibility = View.GONE
-        binding.textView5.visibility = View.GONE
-        binding.progressBar.visibility = View.VISIBLE
+        loadingDialog()
         GlobalScope.launch(Dispatchers.IO) {
             val auth = myAuth.signInWithCredential(credential).await()
             val firebaseUser = auth.user
@@ -125,23 +109,22 @@ class SignIn : AppCompatActivity() {
         }
     }
 
+    private fun loadingDialog() {
+        dialog = Dialog(this)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.loading_dialog)
+        dialog.create()
+        dialog.show()
+    }
+
     private fun updateUi(firebaseUser: FirebaseUser?) {
         if (firebaseUser != null){
+            val user = UserDetails(firebaseUser.uid,firebaseUser.displayName!!,firebaseUser.email!!,firebaseUser.photoUrl.toString())
+            val userDao = UserDao()
+            userDao.addUser(user)
             startActivity(Intent(this,MainActivity::class.java))
+            dialog.dismiss()
             finish()
-        }else{
-            binding.textView4.visibility = View.VISIBLE
-            binding.textView8.visibility = View.VISIBLE
-            binding.googleSignIn.visibility = View.VISIBLE
-            binding.imageView2.visibility = View.VISIBLE
-            binding.progressBar.visibility = View.VISIBLE
-            binding.username.visibility = View.VISIBLE
-            binding.password.visibility = View.VISIBLE
-            binding.forgotPassword.visibility = View.VISIBLE
-            binding.sigInButton.visibility = View.VISIBLE
-            binding.signUpLittle.visibility = View.VISIBLE
-            binding.textView5.visibility = View.VISIBLE
-            binding.progressBar.visibility = View.GONE
         }
     }
 
@@ -149,9 +132,52 @@ class SignIn : AppCompatActivity() {
         super.onStart()
         val current = myAuth.currentUser
         updateUi(current)
+
     }
 
     override fun onBackPressed() {
         finishAffinity()
     }
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.googleSignIn -> {
+                signIn()
+            }
+            R.id.forgotPassword -> {
+                startActivity(Intent(this,ForgotPassword::class.java))
+            }
+            R.id.sigInButton -> {
+                val user = myAuth.currentUser
+                val email = binding.username.text.toString().trim()
+                val password = binding.password.text.toString().trim()
+                when {
+                    email.isEmpty() -> {
+                        binding.username.requestFocus()
+                        binding.username.error = "Required"
+                    }
+                    !Patterns.EMAIL_ADDRESS.matcher(email).matches() ->{
+                        binding.username.error = "Please enter valid email"
+                        binding.username.requestFocus()
+                    }
+                    password.length < 6 -> {
+                        binding.password.error = "Password should be more than 8 characters"
+                        binding.password.requestFocus()
+                    }
+                    password.isEmpty() -> {
+                        binding.password.requestFocus()
+                        binding.password.error = "Required"
+                    }
+                    else -> {
+                        signInWithEmail(email,password)
+                    }
+                }
+            }
+            R.id.signUpLittle -> {
+                Intent(this,SignUp::class.java).also { startActivity(it) }
+            }
+        }
+    }
+
+
 }

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.digitron" >
+    package="com.example.digitron">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -14,7 +14,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Digitron"
-        tools:ignore="AllowBackup" >
+        tools:ignore="AllowBackup">
+        <activity
+            android:name=".userentrance.ForgotPassword"
+            android:exported="false" />
         <activity
             android:name=".navigationComponent.AccountDetails"
             android:exported="false"
@@ -29,8 +32,8 @@
 
         <activity
             android:name=".productFiles.ProductView"
-            android:parentActivityName=".ProductsPage"
-            android:exported="false" />
+            android:exported="false"
+            android:parentActivityName=".ProductsPage" />
         <activity
             android:name=".userentrance.SignUp"
             android:exported="false" />
@@ -42,16 +45,14 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
-<!--        <activity-->
-<!--            android:name=".userentrance.EnteranceScreen"-->
-<!--            android:exported="true" >-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.MAIN" />-->
-
-<!--                <category android:name="android.intent.category.LAUNCHER" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+        </activity> <!-- <activity -->
+        <!-- android:name=".userentrance.EnteranceScreen" -->
+        <!-- android:exported="true" > -->
+        <!-- <intent-filter> -->
+        <!-- <action android:name="android.intent.action.MAIN" /> -->
+        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
+        <!-- </intent-filter> -->
+        <!-- </activity> -->
         <activity
             android:name=".ContactUs"
             android:exported="false"
@@ -66,8 +67,8 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
-            android:theme="@style/Theme.Digitron.NoActionBar"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.Digitron.NoActionBar" />
     </application>
 
 </manifest>

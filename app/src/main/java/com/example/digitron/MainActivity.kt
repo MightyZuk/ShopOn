@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -13,6 +15,9 @@ import com.example.digitron.databinding.ActivityMainBinding
 import com.example.digitron.navigationComponent.AccountDetails
 import com.example.digitron.userentrance.EnteranceScreen
 import com.example.digitron.userentrance.SignIn
+import com.google.android.gms.auth.account.WorkAccount.getClient
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -23,6 +28,15 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.smarteist.autoimageslider.SliderAnimations
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import kotlinx.coroutines.DelicateCoroutinesApi
+import androidx.annotation.NonNull
+import com.example.digitron.databinding.NavHeaderLayoutBinding
+import com.google.android.gms.auth.api.Auth
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount
+
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.FirebaseAuth
 
 
 class MainActivity : AppCompatActivity(){
@@ -39,14 +53,15 @@ class MainActivity : AppCompatActivity(){
         supportActionBar?.setCustomView(R.layout.custom_action_bar)
         setContentView(view)
 
+        val b = binding.navigationView.getHeaderView(0)
+        b.findViewById<TextView>(R.id.userTop).text = Firebase.auth.currentUser?.displayName
+        b.findViewById<ImageView>(R.id.image).setImageURI(Firebase.auth.currentUser?.photoUrl)
 
         binding.navigationView.setNavigationItemSelectedListener {
             when(it.itemId){
                 R.id.account -> startActivity(Intent(this,AccountDetails::class.java))
                 R.id.logout -> {
-                    val user = Firebase.auth.currentUser
-                    Firebase.auth.signOut()
-                    startActivity(Intent(this,SignIn::class.java))
+                    signOut()
                 }
                 R.id.share ->{
                     val sendIntent : Intent = Intent().apply {
@@ -114,5 +129,12 @@ class MainActivity : AppCompatActivity(){
 
     fun sliderView(view: android.view.View) {
         startActivity(Intent(this,ProductsPage::class.java))
+    }
+
+    @DelicateCoroutinesApi
+    private fun signOut(){
+        Firebase.auth.signOut()
+        startActivity(Intent(this,SignIn::class.java))
+        finish()
     }
 }

@@ -1,19 +1,31 @@
 package com.example.digitron.userentrance
 
+import android.app.Dialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Layout
+import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
+import android.view.Window
+import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.graphics.toColor
 import com.example.digitron.MainActivity
 import com.example.digitron.R
 import com.example.digitron.databinding.ActivitySignUpBinding
+import com.example.digitron.databinding.LoadingDialogBinding
+import com.example.digitron.databinding.TermsBinding
+import com.example.digitron.userDatabase.UserDao
+import com.example.digitron.userDatabase.UserDetails
+import com.google.android.material.button.MaterialButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.FirebaseDatabase.getInstance
 import com.google.firebase.ktx.Firebase
@@ -21,12 +33,13 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import java.lang.ref.PhantomReference
 import java.util.jar.Manifest
 
-class SignUp : AppCompatActivity() {
+@DelicateCoroutinesApi
+class SignUp : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var auth: FirebaseAuth
     private lateinit var binding: ActivitySignUpBinding
+    private lateinit var loadingDialog: Dialog
 
-    @DelicateCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
@@ -34,13 +47,11 @@ class SignUp : AppCompatActivity() {
         supportActionBar?.title = null
         setContentView(view)
 
-        auth = Firebase.auth
+        auth = FirebaseAuth.getInstance()
 
-        binding.signInLittle.setOnClickListener {
-            Intent(this,SignIn::class.java).also {
-                startActivity(it)
-            }
-        }
+        binding.signInLittle.setOnClickListener(this)
+        binding.createAnAccountButton.setOnClickListener(this)
+
     }
 
     override fun onBackPressed() {
@@ -52,36 +63,6 @@ class SignUp : AppCompatActivity() {
         val currentUser = auth.currentUser
         if(currentUser != null){
             startActivity(Intent(this,MainActivity::class.java))
-        }
-    }
-
-    fun createAccount(view: android.view.View) {
-        val username = binding.name.text.toString()
-        val email = binding.email.text
-        val password = binding.password.text
-        val terms = binding.terms
-
-        when{
-            username.isEmpty() ->{
-                binding.name.requestFocus()
-                binding.name.error = "required"
-            }
-            email.isEmpty() -> {
-                binding.email.error = "required"
-                binding.email.requestFocus()
-            }
-            password.isEmpty() -> {
-                binding.password.error = "required"
-                binding.password.requestFocus()
-            }
-            !terms.isChecked -> {
-                terms.error = "required"
-                terms.requestFocus()
-            }
-            else -> {
-                startActivity(Intent(this,MainActivity::class.java))
-            }
-
         }
     }
 
@@ -129,17 +110,110 @@ class SignUp : AppCompatActivity() {
                 "8.3 No indulgence granted by either party to the other in relation to any term hereof shall be deemed a waiver of such term or prejudice the later enforcement of that or any other term hereof.\n" +
                 "8.4 The headings in this Contract are for convenience only and shall not affect its interpretation."
 
+                showCustomDialog(terms)
+    }
+
+    private fun showCustomDialog(terms: String){
+
         if (binding.terms.isChecked) {
-            val dialog = AlertDialog.Builder(this,R.style.WelcomeStyle)
+            val dialog = Dialog(this@SignUp)
             dialog.setCancelable(false)
-            dialog.setTitle("Terms & Condition")
-            dialog.setMessage(terms)
-            dialog.setPositiveButton("Accept",null)
+            dialog.setContentView(R.layout.terms)
+
+            val button = dialog.findViewById<MaterialButton>(R.id.accept)
+            val text = dialog.findViewById<TextView>(R.id.terms)
+
+            text.text = terms
+            button.setOnClickListener {
+                dialog.dismiss()
+            }
             dialog.create()
             dialog.show()
-
         }
     }
 
+    @DelicateCoroutinesApi
+    private fun signUpWithEmail(email: String, password: String){
+
+        auth.createUserWithEmailAndPassword(email,password)
+            .addOnCompleteListener{
+                if (it.isSuccessful){
+                    val user = auth.currentUser
+                    updateUi(user)
+                }else{
+                    Toast.makeText(this,"failed",Toast.LENGTH_SHORT).show()
+                }
+            }
+
+    }
+
+    @DelicateCoroutinesApi
+    private fun updateUi(firebaseUser: FirebaseUser?){
+            val user = UserDetails(
+                firebaseUser!!.uid,
+                binding.name.text.toString(),
+                binding.email.text.toString(),
+                firebaseUser.photoUrl.toString()
+            )
+            val userDao = UserDao()
+            userDao.addUser(user)
+            startActivity(Intent(this,SignIn::class.java))
+            loadingDialog.dismiss()
+    }
+
+    private fun customLoadingDialog(){
+        loadingDialog = Dialog(this@SignUp)
+        loadingDialog.setCancelable(false)
+        loadingDialog.setContentView(R.layout.loading_dialog)
+        loadingDialog.create()
+        loadingDialog.show()
+    }
+
+    override fun onClick(v: View?) {
+        when(v?.id){
+            R.id.createAnAccountButton -> {
+                val username = binding.name.text.toString().trim()
+                val email = binding.email.text.toString().trim()
+                val password = binding.password.text.toString().trim()
+                val terms = binding.terms
+
+                when{
+                    username.isEmpty() ->{
+                        binding.name.error = "required"
+                        binding.name.requestFocus()
+                    }
+                    email.isEmpty() -> {
+                        binding.email.error = "required"
+                        binding.email.requestFocus()
+                    }
+                    !Patterns.EMAIL_ADDRESS.matcher(email).matches() -> {
+                        binding.email.error = "Please provide valid email"
+                        binding.email.requestFocus()
+                    }
+                    password.isEmpty() -> {
+                        binding.password.error = "required"
+                        binding.password.requestFocus()
+                    }
+                    password.length < 6 -> {
+                        binding.password.error = "Password should be more than 6 characters"
+                    }
+                    !terms.isChecked -> {
+                        terms.error = "required"
+                        terms.requestFocus()
+                    }
+                    else -> {
+                        customLoadingDialog()
+                        signUpWithEmail(email,password)
+                    }
+
+                }
+            }
+            R.id.signInLittle -> {
+                Intent(this,SignIn::class.java).also {
+                    startActivity(it)
+                }
+            }
+        }
+    }
 
 }

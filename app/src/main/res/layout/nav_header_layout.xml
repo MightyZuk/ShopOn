@@ -9,10 +9,10 @@
 
     <ImageView
         android:id="@+id/image"
-        android:src="@mipmap/ic_launcher_round"
-        android:layout_centerHorizontal="true"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/ic_launcher_round"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -27,13 +27,14 @@
         tools:ignore="HardcodedText" />
 
     <TextView
-        android:text="User"
-        android:layout_centerHorizontal="true"
-        android:textSize="20sp"
-        android:textColor="@color/white"
-        android:textStyle="bold|italic"
-        android:layout_below="@id/hello"
+        android:id="@+id/userTop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tools:ignore="HardcodedText" />
+        android:layout_below="@id/hello"
+        android:layout_centerHorizontal="true"
+        android:text="@string/user"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold|italic" />
+
 </RelativeLayout>

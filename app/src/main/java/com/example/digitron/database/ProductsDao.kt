@@ -1,6 +1,5 @@
 package com.example.digitron.database
 
-import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.*
 

@@ -146,7 +146,6 @@
         android:layout_gravity="start"
         app:itemIconTint="@color/red"
         android:fitsSystemWindows="true"
-
         app:headerLayout="@layout/nav_header_layout"
         app:menu="@menu/user_page"
         android:layout_height="match_parent" />
