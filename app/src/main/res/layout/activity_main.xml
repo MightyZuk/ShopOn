@@ -6,7 +6,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    tools:openDrawer="start"
     android:background="@color/white"
     >
 
@@ -30,15 +29,26 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="497dp"
+                android:src="@drawable/image"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="1.0" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/products"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/products"
-                android:textSize="12sp"
-                android:textAlignment="center"
                 android:backgroundTint="@color/light_blue"
+                android:text="@string/products"
+                android:textAlignment="center"
                 android:textColor="@color/black"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@+id/sliderView"
                 app:layout_constraintEnd_toStartOf="@+id/about_us"
                 app:layout_constraintHorizontal_bias="0.5"
@@ -48,35 +58,35 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/about_us"
-                android:backgroundTint="@color/light_blue"
-                android:textSize="12sp"
-                android:textAlignment="center"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/light_blue"
                 android:text="@string/about_us"
-                tools:ignore="OnClick,UsingOnClickInXml"
+                android:textAlignment="center"
                 android:textColor="@color/black"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@+id/sliderView"
                 app:layout_constraintEnd_toStartOf="@+id/contact_us"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/products"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="OnClick,UsingOnClickInXml" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/contact_us"
                 android:layout_width="wrap_content"
-                android:backgroundTint="@color/light_blue"
                 android:layout_height="wrap_content"
+                android:backgroundTint="@color/light_blue"
                 android:text="@string/contact_us"
-                android:textSize="12sp"
                 android:textAlignment="center"
                 android:textColor="@color/black"
-                tools:ignore="OnClick,UsingOnClickInXml"
+                android:textSize="12sp"
                 app:layout_constraintBottom_toTopOf="@+id/sliderView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.5"
                 app:layout_constraintStart_toEndOf="@+id/about_us"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="OnClick,UsingOnClickInXml" />
 
             <com.smarteist.autoimageslider.SliderView
                 android:id="@+id/sliderView"
@@ -90,8 +100,8 @@
                 app:layout_constraintVertical_bias="0.148"
                 app:sliderAnimationDuration="300"
                 app:sliderAutoCycleDirection="right"
-                app:sliderScrollTimeInSec="2"
                 app:sliderAutoCycleEnabled="true"
+                app:sliderScrollTimeInSec="2"
                 app:sliderStartAutoCycle="true" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
@@ -131,6 +141,7 @@
                 app:layout_constraintVertical_bias="0.864"
                 app:shapeAppearanceOverlay="@style/fabShape"
                 tools:ignore="RtlSymmetry,UsingOnClickInXml,SpeakableTextPresentCheck" />
+
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
