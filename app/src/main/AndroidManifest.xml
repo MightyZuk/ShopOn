@@ -16,6 +16,9 @@
         android:theme="@style/Theme.Digitron"
         tools:ignore="AllowBackup">
         <activity
+            android:name=".navigationComponent.MyOrders"
+            android:exported="false" />
+        <activity
             android:name=".userentrance.ForgotPassword"
             android:exported="false" />
         <activity
@@ -42,17 +45,17 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity> <!-- <activity -->
-        <!-- android:name=".userentrance.EnteranceScreen" -->
-        <!-- android:exported="true" > -->
-        <!-- <intent-filter> -->
-        <!-- <action android:name="android.intent.action.MAIN" /> -->
-        <!-- <category android:name="android.intent.category.LAUNCHER" /> -->
-        <!-- </intent-filter> -->
-        <!-- </activity> -->
+        </activity>
+<!--         <activity-->
+<!--         android:name=".userentrance.EnteranceScreen"-->
+<!--         android:exported="true" >-->
+<!--         <intent-filter>-->
+<!--             <action android:name="android.intent.action.MAIN" />-->
+<!--             <category android:name="android.intent.category.LAUNCHER" />-->
+<!--         </intent-filter>-->
+<!--         </activity>-->
         <activity
             android:name=".ContactUs"
             android:exported="false"

@@ -2,11 +2,14 @@ package com.example.digitron.navigationComponent
 
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toIcon
 import com.example.digitron.R
 import com.example.digitron.databinding.ActivityAccountDetailsBinding
@@ -25,6 +28,8 @@ class AccountDetails : AppCompatActivity(), View.OnClickListener {
         val binding = ActivityAccountDetailsBinding.inflate(layoutInflater)
         val view= binding.root
         supportActionBar?.title= "Accounts"
+        window.statusBarColor = ContextCompat.getColor(this, R.color.red)
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.red)))
         setContentView(view)
 
         binding.name.setText(FirebaseAuth.getInstance().currentUser?.displayName)

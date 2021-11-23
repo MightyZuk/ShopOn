@@ -37,7 +37,6 @@
                 android:text="@string/products"
                 android:textSize="12sp"
                 android:textAlignment="center"
-                android:onClick="products"
                 android:backgroundTint="@color/light_blue"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/sliderView"
@@ -55,7 +54,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/about_us"
-                android:onClick="aboutUs"
                 tools:ignore="OnClick,UsingOnClickInXml"
                 android:textColor="@color/black"
                 app:layout_constraintBottom_toTopOf="@+id/sliderView"
@@ -72,7 +70,6 @@
                 android:text="@string/contact_us"
                 android:textSize="12sp"
                 android:textAlignment="center"
-                android:onClick="contactUs"
                 android:textColor="@color/black"
                 tools:ignore="OnClick,UsingOnClickInXml"
                 app:layout_constraintBottom_toTopOf="@+id/sliderView"
@@ -98,7 +95,7 @@
                 app:sliderStartAutoCycle="true" />
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
-                android:id="@+id/extendedFloatingActionButton"
+                android:id="@+id/shopNow"
                 android:layout_width="140dp"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/red"
@@ -107,7 +104,6 @@
                 android:textColor="@color/white"
                 android:textSize="18sp"
                 android:textStyle="bold"
-                android:onClick="shopNow"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
@@ -148,6 +144,70 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_layout"
         app:menu="@menu/user_page"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent" >
+
+        <RelativeLayout
+            android:layout_gravity="bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
+            android:paddingTop="10dp">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="35dp"
+                android:text="Follow us on"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                tools:ignore="HardcodedText" />
+
+            <ImageView
+                android:id="@+id/fb"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_below="@id/textView"
+                android:layout_marginStart="50dp"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_facebook_square_brands"
+                />
+
+            <ImageView
+                android:id="@+id/insta"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:layout_alignTop="@+id/fb"
+                android:layout_alignBottom="@+id/fb"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="0dp"
+                android:layout_marginBottom="0dp"
+                android:layout_toEndOf="@+id/fb"
+                android:src="@drawable/insta" />
+
+            <ImageView
+                android:id="@+id/linked"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignTop="@+id/insta"
+                android:layout_alignBottom="@+id/insta"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/insta"
+                android:src="@drawable/ic_linkedin_brands" />
+
+            <ImageView
+                android:id="@+id/yt"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_alignTop="@+id/linked"
+                android:layout_alignBottom="@+id/linked"
+                android:layout_marginStart="10dp"
+                android:layout_toEndOf="@+id/linked"
+                android:src="@drawable/ic_youtube_square_brands" />
+
+        </RelativeLayout>
+
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>

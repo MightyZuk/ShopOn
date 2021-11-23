@@ -13,6 +13,7 @@ import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
+import androidx.core.content.ContextCompat
 import androidx.core.graphics.toColor
 import com.example.digitron.MainActivity
 import com.example.digitron.R
@@ -45,9 +46,10 @@ class SignUp : AppCompatActivity(), View.OnClickListener {
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         val view = binding.root
         supportActionBar?.title = null
+        window.statusBarColor = ContextCompat.getColor(this, R.color.red)
         setContentView(view)
 
-        auth = FirebaseAuth.getInstance()
+        auth = Firebase.auth
 
         binding.signInLittle.setOnClickListener(this)
         binding.createAnAccountButton.setOnClickListener(this)
@@ -132,35 +134,6 @@ class SignUp : AppCompatActivity(), View.OnClickListener {
         }
     }
 
-    @DelicateCoroutinesApi
-    private fun signUpWithEmail(email: String, password: String){
-
-        auth.createUserWithEmailAndPassword(email,password)
-            .addOnCompleteListener{
-                if (it.isSuccessful){
-                    val user = auth.currentUser
-                    updateUi(user)
-                }else{
-                    Toast.makeText(this,"failed",Toast.LENGTH_SHORT).show()
-                }
-            }
-
-    }
-
-    @DelicateCoroutinesApi
-    private fun updateUi(firebaseUser: FirebaseUser?){
-            val user = UserDetails(
-                firebaseUser!!.uid,
-                binding.name.text.toString(),
-                binding.email.text.toString(),
-                firebaseUser.photoUrl.toString()
-            )
-            val userDao = UserDao()
-            userDao.addUser(user)
-            startActivity(Intent(this,SignIn::class.java))
-            loadingDialog.dismiss()
-    }
-
     private fun customLoadingDialog(){
         loadingDialog = Dialog(this@SignUp)
         loadingDialog.setCancelable(false)
@@ -210,10 +183,26 @@ class SignUp : AppCompatActivity(), View.OnClickListener {
             }
             R.id.signInLittle -> {
                 Intent(this,SignIn::class.java).also {
+                    it.putExtra("name",binding.name.text.toString().trim())
                     startActivity(it)
                 }
             }
         }
+    }
+
+    private fun signUpWithEmail(email: String, password: String) {
+        auth.createUserWithEmailAndPassword(email,password)
+            .addOnCompleteListener(this) {task ->
+                if (task.isSuccessful){
+                    val user = auth.currentUser
+//                    startActivity(Intent(this, SignIn::class.java))
+                    loadingDialog.dismiss()
+                    Toast.makeText(this,"Account is created",Toast.LENGTH_SHORT).show()
+                }else{
+                    Toast.makeText(this,"Sign Up Failed",Toast.LENGTH_SHORT).show()
+                    loadingDialog.dismiss()
+                }
+            }
     }
 
 }

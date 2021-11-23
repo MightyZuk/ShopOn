@@ -9,6 +9,7 @@ import android.util.Patterns
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.digitron.MainActivity
 import com.example.digitron.R
 import com.example.digitron.databinding.ActivitySignInBinding
@@ -43,6 +44,7 @@ class SignIn : AppCompatActivity(), View.OnClickListener {
         binding = ActivitySignInBinding.inflate(layoutInflater)
         val view = binding.root
         supportActionBar?.title = null
+        window.statusBarColor = ContextCompat.getColor(this, R.color.red)
         setContentView(view)
 
         val gso = GoogleSignInOptions
@@ -51,10 +53,10 @@ class SignIn : AppCompatActivity(), View.OnClickListener {
             .requestEmail()
             .build()
 
+        dialog = Dialog(this)
         googleSignInClient = GoogleSignIn.getClient(this, gso)
 
-        myAuth = FirebaseAuth.getInstance()
-
+        myAuth = Firebase.auth
         binding.forgotPassword.setOnClickListener(this)
         binding.sigInButton.setOnClickListener(this)
         binding.signUpLittle.setOnClickListener(this)
@@ -65,10 +67,13 @@ class SignIn : AppCompatActivity(), View.OnClickListener {
         myAuth.signInWithEmailAndPassword(email,password)
             .addOnCompleteListener {
                 if (it.isSuccessful){
-                    updateUi(myAuth.currentUser)
+                    startActivity(Intent(this,MainActivity::class.java))
+                    Toast.makeText(this,"Success",Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
                     finish()
                 }else{
                     Toast.makeText(this,"failed",Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
                 }
             }
     }
@@ -117,11 +122,12 @@ class SignIn : AppCompatActivity(), View.OnClickListener {
         dialog.show()
     }
 
-    private fun updateUi(firebaseUser: FirebaseUser?) {
-        if (firebaseUser != null){
-            val user = UserDetails(firebaseUser.uid,firebaseUser.displayName!!,firebaseUser.email!!,firebaseUser.photoUrl.toString())
+    private fun updateUi(user: FirebaseUser?) {
+        if (user != null){
+            val name  = intent.getStringExtra("name")
+            val users = UserDetails(user.uid,name.toString(),user.email.toString(),user.photoUrl.toString())
             val userDao = UserDao()
-            userDao.addUser(user)
+            userDao.addUser(users)
             startActivity(Intent(this,MainActivity::class.java))
             dialog.dismiss()
             finish()
@@ -148,7 +154,6 @@ class SignIn : AppCompatActivity(), View.OnClickListener {
                 startActivity(Intent(this,ForgotPassword::class.java))
             }
             R.id.sigInButton -> {
-                val user = myAuth.currentUser
                 val email = binding.username.text.toString().trim()
                 val password = binding.password.text.toString().trim()
                 when {
@@ -169,6 +174,7 @@ class SignIn : AppCompatActivity(), View.OnClickListener {
                         binding.password.error = "Required"
                     }
                     else -> {
+                        loadingDialog()
                         signInWithEmail(email,password)
                     }
                 }

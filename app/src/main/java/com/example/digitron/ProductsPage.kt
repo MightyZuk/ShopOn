@@ -3,14 +3,20 @@ package com.example.digitron
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.text.Html
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.RadioButton
+import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
+import androidx.core.view.MenuItemCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.digitron.database.ProductDetails
@@ -39,7 +45,9 @@ class ProductsPage : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityProductsPageBinding.inflate(layoutInflater)
         val view = binding.root
+        window.statusBarColor = ContextCompat.getColor(this,R.color.red)
         supportActionBar?.title = "Products"
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.red)))
         setContentView(view)
 
         images  = arrayOf(R.drawable.`as`,R.drawable.aap,R.drawable.billing_software,R.drawable.email_verifier,

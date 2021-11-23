@@ -2,6 +2,7 @@ package com.example.digitron.productFiles
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
@@ -9,6 +10,7 @@ import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import androidx.appcompat.app.ActionBar
+import androidx.core.content.ContextCompat
 import androidx.core.text.trimmedLength
 import com.example.digitron.ProductsPage
 import com.example.digitron.R
@@ -21,8 +23,10 @@ class ProductView : AppCompatActivity() {
         val binding = ActivityProductViewBinding.inflate(layoutInflater)
         val view = binding.root
         supportActionBar?.title = null
+        window.statusBarColor = ContextCompat.getColor(this, R.color.red)
         supportActionBar?.setHomeButtonEnabled(true)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.red)))
         setContentView(view)
 
         val image = intent.getIntExtra("image",0)

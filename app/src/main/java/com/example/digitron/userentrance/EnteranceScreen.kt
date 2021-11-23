@@ -22,12 +22,12 @@ class EnteranceScreen : AppCompatActivity() {
             Toast.makeText(this,"developed by MightyZuk",Toast.LENGTH_SHORT).show()
         }
 
-//        binding.signIn.setOnClickListener {
-//            Intent(this,SignIn::class.java).also { startActivity(it) }
-//        }
-//
-//        binding.signUp.setOnClickListener {
-//            Intent(this,SignUp::class.java).also { startActivity(it) }
-//        }
+        binding.signIn.setOnClickListener {
+            Intent(this,SignIn::class.java).also { startActivity(it) }
+        }
+
+        binding.signUp.setOnClickListener {
+            Intent(this,SignUp::class.java).also { startActivity(it) }
+        }
     }
 }

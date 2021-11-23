@@ -1,10 +1,14 @@
 package com.example.digitron
 
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.util.Patterns
+import android.widget.Toast
+import androidx.core.content.ContextCompat
 import com.example.digitron.databinding.ActivityContactUsBinding
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -20,10 +24,36 @@ class ContactUs : AppCompatActivity(),OnMapReadyCallback{
         val binding = ActivityContactUsBinding.inflate(layoutInflater)
         val view = binding.root
         supportActionBar?.title = "Contact Us"
+        window.statusBarColor = ContextCompat.getColor(this,R.color.red)
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.red)))
         setContentView(view)
 
         val mapFragment = supportFragmentManager.findFragmentById(R.id.mapView) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+        binding.sendUs.setOnClickListener{
+            when {
+                binding.name.text.isEmpty() -> {
+                    binding.name.error = "Required"
+                    binding.name.requestFocus()
+                }
+                binding.email.text.isEmpty() -> {
+                    binding.email.error = "Required"
+                    binding.email.requestFocus()
+                }
+                binding.message.text.isEmpty() -> {
+                    binding.message.error = "Required"
+                    binding.message.requestFocus()
+                }
+                !Patterns.EMAIL_ADDRESS.matcher(binding.email.text.toString()).matches() -> {
+                    binding.email.error = "Please provide a valid email"
+                    binding.email.requestFocus()
+                }
+                else -> {
+                    Toast.makeText(this,"Sent",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
     }
 
     fun takeMeToWhatsapp(view: android.view.View) {

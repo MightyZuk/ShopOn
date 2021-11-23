@@ -8,6 +8,18 @@
         android:title="Account"
         tools:ignore="HardcodedText" />
 
+    <item
+        android:id="@+id/orders"
+        android:icon="@drawable/order_list"
+        android:title="My Orders"
+        tools:ignore="HardcodedText"/>
+
+    <item
+        android:id="@+id/bag"
+        android:icon="@drawable/bag"
+        android:title="My Bag"
+        tools:ignore="HardcodedText" />
+
     <item android:id="@+id/logout"
         android:icon="@drawable/logout"
         android:title="Log Out"
