@@ -12,5 +12,4 @@ class ProductDetails(
     val category: String,
     val description: String,
     val highlights: String,
-    val price: Int) {
-}
+    val price: Int)

@@ -94,6 +94,7 @@ class SignIn : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         when(v?.id){
             R.id.googleSignIn -> {
+                loadingDialog()
                 signIn()
             }
             R.id.forgotPassword -> {
@@ -188,6 +189,7 @@ class SignIn : AppCompatActivity(), View.OnClickListener {
 
             val mainActivityIntent = Intent(this, MainActivity::class.java)
             startActivity(mainActivityIntent)
+            dialog.dismiss()
             finish()
         }
     }

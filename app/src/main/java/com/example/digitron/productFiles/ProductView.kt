@@ -14,14 +14,8 @@ import androidx.core.content.ContextCompat
 import androidx.core.text.trimmedLength
 import com.example.digitron.ProductsPage
 import com.example.digitron.R
+import com.example.digitron.database.ProductDetails
 import com.example.digitron.databinding.ActivityProductViewBinding
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import java.text.FieldPosition
-import java.text.SimpleDateFormat
-import java.util.*
-import kotlin.collections.HashMap
 
 class ProductView : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
@@ -83,6 +77,7 @@ class ProductView : AppCompatActivity() {
     }
 
     private fun addToCart() {
+        val current = intent.getStringExtra("current")
 
     }
 

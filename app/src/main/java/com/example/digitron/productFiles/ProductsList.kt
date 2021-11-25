@@ -30,7 +30,6 @@ class ProductsList(private val context: Context,
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int){
-
         val current = productDetails[position]
         binding.productImage.setImageResource(current.image)
         binding.productTitle.text = current.title
