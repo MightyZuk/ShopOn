@@ -15,6 +15,13 @@ import androidx.core.text.trimmedLength
 import com.example.digitron.ProductsPage
 import com.example.digitron.R
 import com.example.digitron.databinding.ActivityProductViewBinding
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import java.text.FieldPosition
+import java.text.SimpleDateFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 class ProductView : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
@@ -32,6 +39,7 @@ class ProductView : AppCompatActivity() {
         val image = intent.getIntExtra("image",0)
         val text = intent.getStringExtra("title")
         val price = intent.getIntExtra("price",0)
+
         binding.title.text = text.toString()
 
         binding.productImage.setImageResource(image)
@@ -54,6 +62,7 @@ class ProductView : AppCompatActivity() {
 
         binding.descript.text = "Ecommerce website design is the process of creating an online store for your business to sell digitally to target consumers. To design an e-commerce website, you need to plan, conceptualize, and arrange your content and products for effective display on the Internet."
 
+
         binding.card.setOnClickListener {
             if (binding.details.maxLines <= 8){
                 binding.details.setLines(35)
@@ -67,6 +76,13 @@ class ProductView : AppCompatActivity() {
         binding.buyNow.setOnClickListener {
             startActivity(Intent(this,Cart::class.java))
         }
+
+        binding.addToCart.setOnClickListener{
+            addToCart()
+        }
+    }
+
+    private fun addToCart() {
 
     }
 

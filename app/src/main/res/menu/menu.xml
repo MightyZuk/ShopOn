@@ -5,10 +5,10 @@
 
     <item android:id="@+id/search_bar"
         android:title="Search"
-        app:showAsAction="ifRoom"
+        app:showAsAction="always"
         android:icon="@drawable/ic_baseline_search_24"
         tools:ignore="HardcodedText"
-        app:actionViewClass="androidx.appcompat.widget.SearchView" />
+        app:actionViewClass="android.widget.SearchView" />
 
     <item
         android:id="@+id/shoppingBag"

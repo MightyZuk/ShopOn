@@ -29,6 +29,7 @@ import com.example.digitron.productFiles.ProductsList
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.properties.Delegates
 
 class ProductsPage : AppCompatActivity() {
 
@@ -39,8 +40,11 @@ class ProductsPage : AppCompatActivity() {
     private lateinit var productsListAdapter: ProductsList
     private lateinit var list: MutableList<ProductDetails>
     private lateinit var binding: ActivityProductsPageBinding
+    private lateinit var tempList: MutableList<ProductDetails>
 
-    @SuppressLint("NotifyDataSetChanged")
+    private var radioButton by Delegates.notNull<Int>()
+
+    @SuppressLint("NotifyDataSetChanged", "CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityProductsPageBinding.inflate(layoutInflater)
@@ -49,6 +53,9 @@ class ProductsPage : AppCompatActivity() {
         supportActionBar?.title = "Products"
         supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.red)))
         setContentView(view)
+
+        val sharedPreferences = getSharedPreferences("id", MODE_PRIVATE)
+        radioButton = sharedPreferences.getInt("radioButton",0)
 
         images  = arrayOf(R.drawable.`as`,R.drawable.aap,R.drawable.billing_software,R.drawable.email_verifier,
             R.drawable.wb,R.drawable.cle,R.drawable.c_r_m,R.drawable.cs,R.drawable.cwd,R.drawable.dbc,R.drawable.dwd,R.drawable.dw,
@@ -79,14 +86,11 @@ class ProductsPage : AppCompatActivity() {
         titles.sortedArray()
 
         viewModel = ViewModelProvider(this)[ProductsViewModel::class.java]
-        var price = 0
-
         for ((id, i) in (images.indices).withIndex()){
-            val product = ProductDetails(id,images[i],titles[i],category[i],"description","Highlights",price++)
+            val product = ProductDetails(id,images[i],titles[i],category[i],"description","Highlights",(1000..10000).random())
             list.add(product)
             viewModel.addProducts(product)
         }
-
 
         productsListAdapter = ProductsList(this,list)
 
@@ -98,7 +102,38 @@ class ProductsPage : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu,menu)
-        return true
+        val search = menu.findItem(R.id.search_bar)
+        val searchView = search.actionView as SearchView
+
+//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+//
+//            @SuppressLint("NotifyDataSetChanged")
+//            override fun onQueryTextChange(newText: String?): Boolean {
+//                tempList.clear()
+//                val searchText = newText?.lowercase(Locale.getDefault())
+//
+//                if (searchText!!.isNotEmpty()) {
+//                    list.forEach {
+//                        if (it.title.contains(searchText)) {
+//                            tempList.add(it)
+//                        }
+//                    }
+////                    binding.listItem.adapter!!.notifyDataSetChanged()
+//                }
+////                }else{
+////                    tempList.clear()
+////                    list.addAll(tempList)
+////                    binding.listItem.adapter!!.notifyDataSetChanged()
+////                }
+//                return false
+//            }
+//
+//            override fun onQueryTextSubmit(query: String?): Boolean {
+//                return true
+//            }
+//
+//        })
+        return super.onCreateOptionsMenu(menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -120,7 +155,7 @@ class ProductsPage : AppCompatActivity() {
 
         val sharedPreferences = getSharedPreferences("id", MODE_PRIVATE)
         val radioButton = sharedPreferences.getInt("radioButton",0)
-        val editor = sharedPreferences.edit()
+        val editor1 = sharedPreferences.edit()
 
 
         when (radioButton) {
@@ -159,53 +194,54 @@ class ProductsPage : AppCompatActivity() {
         bind.sortGroup.setOnCheckedChangeListener { _, checkedId ->
             when(checkedId){
                 R.id.dataExtractor ->{
-                    editor.putInt("radioButton",0)
-                    list.sortBy { it.category.contains("Data Extractor") }
+                    editor1.putInt("radioButton",0)
+                    list.sortBy { it.category.contains("Software") }
                 }
                 R.id.digitalMarketing ->{
-                    editor.putInt("radioButton",1)
+                    editor1.putInt("radioButton",1)
                     list.sortBy { it.category.contains("Digital Marketing") }
                 }
                 R.id.mobile ->{
-                    editor.putInt("radioButton",2)
-                    list.sortBy { it.category.contains("Mobile") }
+                    editor1.putInt("radioButton",2)
+                    list.sortBy { it.title.contains("Mobile")}
                 }
                 R.id.mobileApp ->{
-                    editor.putInt("radioButton",3)
+                    editor1.putInt("radioButton",3)
                     list.sortBy { it.category.contains("Mobile App")}
                 }
                 R.id.mobileAppDevelopment ->{
-                    editor.putInt("radioButton",4)
+                    editor1.putInt("radioButton",4)
                     list.sortBy { it.category.contains("Mobile App Development") }
                 }
                 R.id.software ->{
-                    editor.putInt("radioButton",5)
+                    editor1.putInt("radioButton",5)
                     list.sortBy { it.category.contains("Software") }
                 }
                 R.id.uncategorized ->{
-                    editor.putInt("radioButton",6)
+                    editor1.putInt("radioButton",6)
                     list.sortBy { it.category.contains("Uncategorized")}
                 }
                 R.id.webDevelopment ->{
-                    editor.putInt("radioButton",7)
+                    editor1.putInt("radioButton",7)
                     list.sortBy { it.category.contains("Web Development") }
                 }
                 R.id.website ->{
-                    editor.putInt("radioButton",8)
+                    editor1.putInt("radioButton",8)
                     list.sortBy { it.category.contains("Website") }
                 }
                 R.id.websiteDesigning ->{
-                    editor.putInt("radioButton",9)
+                    editor1.putInt("radioButton",9)
                     list.sortBy { it.category.contains("Website Designing") }
                 }
 
             }
-            editor.apply()
+            editor1.apply()
             binding.listItem.adapter = productsListAdapter
             Handler(Looper.getMainLooper()).postDelayed({bottomSheetDialog.hide()},400)
         }
     }
 
+    @SuppressLint("CommitPrefEdits")
     fun sortBottomSheet(view: android.view.View) {
         val bottom = BottomSheetDialog(this)
         val bind = BottomSheetBinding.inflate(layoutInflater)
@@ -255,4 +291,6 @@ class ProductsPage : AppCompatActivity() {
             Handler(Looper.getMainLooper()).postDelayed({bottom.hide()},400)
         }
     }
+
+
 }

@@ -5,6 +5,8 @@
     android:layout_width="match_parent"
     android:paddingHorizontal="20dp"
     android:paddingVertical="20dp"
+    android:layout_margin="10dp"
+    android:elevation="10dp"
     android:background="@drawable/ouline_cart"
     android:layout_height="wrap_content">
 
@@ -92,7 +94,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:id="@+id/number"
+            android:id="@+id/numberText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

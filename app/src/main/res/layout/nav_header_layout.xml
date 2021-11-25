@@ -7,11 +7,17 @@
     android:background="@color/red"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <TextView
         android:id="@+id/image"
+        android:elevation="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:textSize="50sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textAlignment="center"
+        tools:text="R"
         android:src="@mipmap/ic_launcher_round"
         tools:ignore="ContentDescription" />
 

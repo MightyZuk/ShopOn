@@ -3,6 +3,8 @@ package com.example.digitron.userentrance
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.content.Intent
+import android.net.Uri
+import android.nfc.Tag
 import android.os.Bundle
 import android.util.Log
 import android.util.Patterns
@@ -10,6 +12,7 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toIcon
 import com.example.digitron.MainActivity
 import com.example.digitron.R
 import com.example.digitron.databinding.ActivitySignInBinding
@@ -25,6 +28,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.auth.User
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.*
 import kotlinx.coroutines.tasks.await
@@ -61,58 +65,18 @@ class SignIn : AppCompatActivity(), View.OnClickListener {
         binding.sigInButton.setOnClickListener(this)
         binding.signUpLittle.setOnClickListener(this)
         binding.googleSignIn.setOnClickListener(this)
+
+
     }
 
-    private fun signInWithEmail(email: String,password: String) {
-        myAuth.signInWithEmailAndPassword(email,password)
-            .addOnCompleteListener {
-                if (it.isSuccessful){
-                    startActivity(Intent(this,MainActivity::class.java))
-                    Toast.makeText(this,"Success",Toast.LENGTH_SHORT).show()
-                    dialog.dismiss()
-                    finish()
-                }else{
-                    Toast.makeText(this,"failed",Toast.LENGTH_SHORT).show()
-                    dialog.dismiss()
-                }
-            }
-    }
-
-    private fun signIn() {
-        val intent = googleSignInClient.signInIntent
-        startActivityForResult(intent,RC_SIGN_IN)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_SIGN_IN){
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            handleSignInResult(task)
+    override fun onStart() {
+        super.onStart()
+        val user = myAuth.currentUser
+        if (user != null && user.isEmailVerified){
+            startActivity(Intent(this,MainActivity::class.java))
         }
     }
 
-    private fun handleSignInResult(completedTask: Task<GoogleSignInAccount>?) {
-        try {
-            val account = completedTask?.getResult(ApiException::class.java)
-            firebaseAuthWithGoogle(account?.idToken)
-        }catch (e: ApiException){
-            Log.d("error",e.toString())
-        }
-    }
-
-    private fun firebaseAuthWithGoogle(idToken: String?) {
-        val credential = GoogleAuthProvider.getCredential(idToken,null)
-        loadingDialog()
-        GlobalScope.launch(Dispatchers.IO) {
-            val auth = myAuth.signInWithCredential(credential).await()
-            val firebaseUser = auth.user
-            withContext(Dispatchers.Main){
-                updateUi(firebaseUser)
-            }
-
-        }
-    }
 
     private fun loadingDialog() {
         dialog = Dialog(this)
@@ -122,24 +86,6 @@ class SignIn : AppCompatActivity(), View.OnClickListener {
         dialog.show()
     }
 
-    private fun updateUi(user: FirebaseUser?) {
-        if (user != null){
-            val name  = intent.getStringExtra("name")
-            val users = UserDetails(user.uid,name.toString(),user.email.toString(),user.photoUrl.toString())
-            val userDao = UserDao()
-            userDao.addUser(users)
-            startActivity(Intent(this,MainActivity::class.java))
-            dialog.dismiss()
-            finish()
-        }
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val current = myAuth.currentUser
-        updateUi(current)
-
-    }
 
     override fun onBackPressed() {
         finishAffinity()
@@ -182,6 +128,67 @@ class SignIn : AppCompatActivity(), View.OnClickListener {
             R.id.signUpLittle -> {
                 Intent(this,SignUp::class.java).also { startActivity(it) }
             }
+        }
+    }
+
+    private fun signInWithEmail(email: String, password: String) {
+        myAuth.signInWithEmailAndPassword(email,password)
+            .addOnCompleteListener{
+                if (it.isSuccessful){
+                    if (myAuth.currentUser!!.isEmailVerified){
+                        startActivity(Intent(this, MainActivity::class.java))
+                    }else{
+                        Toast.makeText(this,"Please wait for email verification",Toast.LENGTH_SHORT).show()
+                    }
+                    dialog.dismiss()
+                }else{
+                    Toast.makeText(this,"failed",Toast.LENGTH_SHORT).show()
+                    dialog.dismiss()
+                }
+            }
+    }
+
+    private fun signIn() {
+        val signInIntent = googleSignInClient.signInIntent
+        startActivityForResult(signInIntent,RC_SIGN_IN)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == RC_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)!!
+                firebaseAuthWithGoogle(account.idToken!!)
+            } catch (e: ApiException) {
+            }
+        }
+    }
+
+    private fun firebaseAuthWithGoogle(idToken: String) {
+        val credential = GoogleAuthProvider.getCredential(idToken, null)
+        GlobalScope.launch(Dispatchers.IO) {
+            val auth = myAuth.signInWithCredential(credential).await()
+            val firebaseUser = auth.user
+            withContext(Dispatchers.Main) {
+                updateUI(firebaseUser)
+            }
+        }
+
+    }
+
+    private fun updateUI(firebaseUser: FirebaseUser?) {
+        if(firebaseUser != null) {
+            val user = UserDetails(firebaseUser.uid,
+                firebaseUser.displayName.toString(),
+                firebaseUser.email.toString())
+
+            val usersDao = UserDao()
+            usersDao.addUser(user)
+
+            val mainActivityIntent = Intent(this, MainActivity::class.java)
+            startActivity(mainActivityIntent)
+            finish()
         }
     }
 

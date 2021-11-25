@@ -21,7 +21,7 @@
         android:id="@+id/product_image"
         android:layout_width="130dp"
         android:layout_marginTop="10dp"
-        android:layout_height="130dp"
+        android:layout_height="100dp"
         android:layout_gravity="center_horizontal"
         android:src="@drawable/google"
         android:background="#ECCECE"
@@ -30,11 +30,11 @@
 
     <TextView
         android:id="@+id/category"
-        android:textSize="13sp"
+        android:textSize="11sp"
         android:textColor="@color/black"
         android:textAlignment="center"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="145dp"
+        android:layout_marginTop="115dp"
         android:text="category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,6 +53,22 @@
         android:text="Product Title"
         android:textColor="@color/black"
         android:textSize="15sp"
+        tools:ignore="HardcodedText" />
+
+    <TextView
+        android:id="@+id/product_price"
+        android:textAlignment="center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="145dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="10dp"
+        android:layout_marginBottom="7dp"
+        android:layout_marginEnd="10dp"
+        android:text="price"
+        android:textColor="@color/black"
+        android:textSize="18sp"
         android:textStyle="bold"
         tools:ignore="HardcodedText" />
+
 </androidx.cardview.widget.CardView>

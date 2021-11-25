@@ -1,12 +1,14 @@
 package com.example.digitron
 
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -15,10 +17,13 @@ import com.example.digitron.navigationComponent.AccountDetails
 import com.example.digitron.navigationComponent.MyOrders
 import com.example.digitron.productFiles.Cart
 import com.example.digitron.userentrance.SignIn
+import com.google.android.gms.auth.GoogleAuthUtil
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.smarteist.autoimageslider.SliderAnimations
 import kotlinx.coroutines.DelicateCoroutinesApi
+import org.w3c.dom.Text
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -36,9 +41,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.setCustomView(R.layout.custom_action_bar)
         setContentView(view)
 
-        val b = binding.navigationView.getHeaderView(0)
-        b.findViewById<TextView>(R.id.userTop).text = Firebase.auth.currentUser?.displayName
-        b.findViewById<ImageView>(R.id.image).setImageURI(Firebase.auth.currentUser?.photoUrl)
+
+        Firebase.firestore.collection("users").document(Firebase.auth.uid.toString())
+            .get().addOnSuccessListener {
+                if (it != null){
+                    val b = binding.navigationView.getHeaderView(0)
+                    b.findViewById<TextView>(R.id.userTop).text = it.getString("name")
+                    b.findViewById<TextView>(R.id.image).text = it.getString("name")?.get(0)?.toUpperCase().toString()
+                }else{
+                    Toast.makeText(this,"Can't fetch data",Toast.LENGTH_SHORT).show()
+                }
+            }
 
         binding.navigationView.setNavigationItemSelectedListener {
             when(it.itemId){

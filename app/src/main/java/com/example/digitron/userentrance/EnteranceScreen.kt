@@ -5,6 +5,8 @@ import android.content.Intent
 import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import com.example.digitron.R
 import com.example.digitron.databinding.ActivityEnteranceScreenBinding
@@ -22,12 +24,8 @@ class EnteranceScreen : AppCompatActivity() {
             Toast.makeText(this,"developed by MightyZuk",Toast.LENGTH_SHORT).show()
         }
 
-        binding.signIn.setOnClickListener {
-            Intent(this,SignIn::class.java).also { startActivity(it) }
-        }
-
-        binding.signUp.setOnClickListener {
-            Intent(this,SignUp::class.java).also { startActivity(it) }
-        }
+        Handler(Looper.getMainLooper()).postDelayed(
+            {startActivity(Intent(this,SignIn::class.java)) }
+            ,500)
     }
 }

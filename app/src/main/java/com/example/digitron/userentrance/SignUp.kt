@@ -1,10 +1,12 @@
 package com.example.digitron.userentrance
 
 import android.app.Dialog
+import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Layout
+import android.util.Log
 import android.util.Patterns
 import android.view.LayoutInflater
 import android.view.View
@@ -29,8 +31,12 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.FirebaseDatabase.getInstance
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import java.lang.ref.PhantomReference
 import java.util.jar.Manifest
 
@@ -60,13 +66,6 @@ class SignUp : AppCompatActivity(), View.OnClickListener {
         finishAffinity()
     }
 
-    override fun onStart() {
-        super.onStart()
-        val currentUser = auth.currentUser
-        if(currentUser != null){
-            startActivity(Intent(this,MainActivity::class.java))
-        }
-    }
 
     fun terms(view: android.view.View) {
         val terms = "1.DEFINITIONS\n" +
@@ -176,30 +175,32 @@ class SignUp : AppCompatActivity(), View.OnClickListener {
                     }
                     else -> {
                         customLoadingDialog()
-                        signUpWithEmail(email,password)
+                        signUpWithEmailAndPassword(username,email,password)
                     }
 
                 }
             }
             R.id.signInLittle -> {
                 Intent(this,SignIn::class.java).also {
-                    it.putExtra("name",binding.name.text.toString().trim())
                     startActivity(it)
                 }
             }
         }
     }
 
-    private fun signUpWithEmail(email: String, password: String) {
+    private fun signUpWithEmailAndPassword(username: String,email: String,password: String) {
         auth.createUserWithEmailAndPassword(email,password)
-            .addOnCompleteListener(this) {task ->
-                if (task.isSuccessful){
-                    val user = auth.currentUser
-//                    startActivity(Intent(this, SignIn::class.java))
+            .addOnCompleteListener(this) {
+                if (it.isSuccessful){
+                    auth.currentUser!!.sendEmailVerification()
+                    Toast.makeText(this,"Please click on email for verification",Toast.LENGTH_SHORT).show()
+                    val user = UserDetails(auth.uid.toString(),username,email)
+                    val dao = UserDao()
+                    dao.addUser(user)
+                    startActivity(Intent(this,SignIn::class.java))
                     loadingDialog.dismiss()
-                    Toast.makeText(this,"Account is created",Toast.LENGTH_SHORT).show()
                 }else{
-                    Toast.makeText(this,"Sign Up Failed",Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this,"Failed",Toast.LENGTH_SHORT).show()
                     loadingDialog.dismiss()
                 }
             }
