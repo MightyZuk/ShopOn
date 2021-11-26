@@ -2,8 +2,10 @@ package com.example.digitron.userDatabase
 
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -25,4 +27,5 @@ class UserDao {
     fun getUserById(id: String): Task<DocumentSnapshot>{
         return userCollection.document(id).get()
     }
+
 }

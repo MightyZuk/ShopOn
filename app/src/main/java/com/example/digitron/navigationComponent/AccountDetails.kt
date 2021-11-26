@@ -18,9 +18,13 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toIcon
 import com.example.digitron.R
 import com.example.digitron.databinding.ActivityAccountDetailsBinding
+import com.example.digitron.databinding.DeletePromptBinding
+import com.example.digitron.databinding.FilterBottomSheetBinding
 import com.example.digitron.databinding.NavHeaderLayoutBinding
 import com.example.digitron.userDatabase.UserDao
 import com.example.digitron.userentrance.ForgotPassword
+import com.example.digitron.userentrance.SignIn
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.FirebaseAuthKtxRegistrar
 import com.google.firebase.auth.ktx.auth
@@ -77,6 +81,7 @@ class AccountDetails : AppCompatActivity(), View.OnClickListener {
 
 
         binding.changePassword.setOnClickListener(this)
+        binding.delete.setOnClickListener(this)
 
 
     }
@@ -86,6 +91,25 @@ class AccountDetails : AppCompatActivity(), View.OnClickListener {
             R.id.changePassword -> {
                 startActivity(Intent(this,ForgotPassword::class.java))
             }
+            R.id.delete -> {
+                val bottomSheet = BottomSheetDialog(this)
+                val bind = DeletePromptBinding.inflate(layoutInflater)
+                bottomSheet.setContentView(bind.root)
+                bottomSheet.setCancelable(false)
+                bottomSheet.show()
+
+                bind.yesDelete.setOnClickListener{
+                    val current = Firebase.auth.currentUser
+                    current?.delete()
+                    Firebase.auth.signOut()
+                    startActivity(Intent(this,SignIn::class.java))
+                    bottomSheet.dismiss()
+                }
+                bind.no.setOnClickListener {
+                    bottomSheet.dismiss()
+                }
+            }
+
         }
     }
 }

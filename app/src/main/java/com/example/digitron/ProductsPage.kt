@@ -70,6 +70,7 @@ class ProductsPage : AppCompatActivity() {
         productsListAdapter = ProductsList(this,list)
 
         binding.listItem.layoutManager = GridLayoutManager(this,2)
+        binding.listItem.setHasFixedSize(true)
         binding.listItem.adapter = productsListAdapter
 
 
@@ -195,12 +196,12 @@ class ProductsPage : AppCompatActivity() {
                     editor1.putInt("radioButton1",9)
                     productsListAdapter.filter.filter("Website Designing")
                 }
-
             }
-            editor1.apply()
             binding.listItem.adapter = productsListAdapter
+            editor1.apply()
             Handler(Looper.getMainLooper()).postDelayed({bottomSheetDialog.hide()},400)
         }
+
     }
 
     @SuppressLint("CommitPrefEdits")
@@ -253,6 +254,5 @@ class ProductsPage : AppCompatActivity() {
             Handler(Looper.getMainLooper()).postDelayed({bottom.hide()},400)
         }
     }
-
 
 }

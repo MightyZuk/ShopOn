@@ -130,22 +130,22 @@
 <!--        app:layout_constraintTop_toTopOf="@+id/textView11"-->
 <!--        app:layout_constraintVertical_bias="1.0" />-->
 
-<!--    <com.google.android.material.button.MaterialButton-->
-<!--        android:id="@+id/materialButton"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:backgroundTint="@color/red"-->
-<!--        android:padding="10dp"-->
-<!--        android:text="Save"-->
-<!--        android:textColor="@color/white"-->
-<!--        android:textSize="15sp"-->
-<!--        app:cornerRadius="10dp"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.5"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/email"-->
-<!--        tools:ignore="HardcodedText" />-->
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/red"
+        android:padding="10dp"
+        android:text="Delete Account"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        app:cornerRadius="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:id="@+id/changePassword"
@@ -162,5 +162,6 @@
         app:layout_constraintTop_toBottomOf="@+id/email"
         app:layout_constraintVertical_bias="0.087"
         tools:ignore="HardcodedText" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -65,7 +65,7 @@
         <entry key="..\:/Users/rahul/AndroidStudioProjects/Digitron/app/src/main/res/layout-xxxhdpi/products_list.xml" value="0.22" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/Digitron/app/src/main/res/layout/activity_about_us.xml" value="0.22" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/Digitron/app/src/main/res/layout/activity_account_details.xml" value="0.21889226100151746" />
-        <entry key="..\:/Users/rahul/AndroidStudioProjects/Digitron/app/src/main/res/layout/activity_cart.xml" value="0.21889226100151746" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/Digitron/app/src/main/res/layout/activity_cart.xml" value="0.25" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/Digitron/app/src/main/res/layout/activity_contact_us.xml" value="0.22" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/Digitron/app/src/main/res/layout/activity_enterance_screen.xml" value="0.22" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/Digitron/app/src/main/res/layout/activity_forgot_password.xml" value="0.21889226100151746" />
@@ -81,6 +81,7 @@
         <entry key="..\:/Users/rahul/AndroidStudioProjects/Digitron/app/src/main/res/layout/bottom_sheet.xml" value="0.30052083333333335" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/Digitron/app/src/main/res/layout/content_main.xml" value="0.21889226100151746" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/Digitron/app/src/main/res/layout/custom_action_bar.xml" value="0.22" />
+        <entry key="..\:/Users/rahul/AndroidStudioProjects/Digitron/app/src/main/res/layout/delete_prompt.xml" value="0.21889226100151746" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/Digitron/app/src/main/res/layout/filter_bottom_sheet.xml" value="0.30052083333333335" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/Digitron/app/src/main/res/layout/footer_layout.xml" value="0.21889226100151746" />
         <entry key="..\:/Users/rahul/AndroidStudioProjects/Digitron/app/src/main/res/layout/fragment_home.xml" value="0.21889226100151746" />
