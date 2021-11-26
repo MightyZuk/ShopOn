@@ -13,9 +13,8 @@
         android:text="@string/digitron_global"
         android:textAlignment="center"
         android:textColor="@color/red"
-        android:paddingEnd="20dp"
         android:textSize="42sp"
-        android:textStyle="bold|italic"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,23 +22,29 @@
         app:layout_constraintVertical_bias="0.01"
         tools:targetApi="m" />
 
-    <TextView
-        android:id="@+id/details"
-        android:layout_width="300dp"
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="150dp"
-        android:layout_marginEnd="150dp"
-        android:padding="10dp"
-        android:text="@string/details"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.525"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintVertical_bias="0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@id/title">
+
+        <TextView
+            android:id="@+id/details"
+            android:layout_marginStart="30dp"
+            android:layout_marginEnd="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="@string/details"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </ScrollView>
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/whatsappLink"
@@ -59,7 +64,6 @@
         app:layout_constraintVertical_bias="0.992"
         app:shapeAppearanceOverlay="@style/fabShape"
         tools:ignore="RtlSymmetry,UsingOnClickInXml" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

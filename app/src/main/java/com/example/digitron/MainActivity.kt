@@ -9,6 +9,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.NonNull
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -18,6 +19,11 @@ import com.example.digitron.navigationComponent.MyOrders
 import com.example.digitron.productFiles.Cart
 import com.example.digitron.userentrance.SignIn
 import com.google.android.gms.auth.GoogleAuthUtil
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.auth.api.signin.internal.SignInHubActivity
+import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -30,6 +36,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var actionBarDrawerToggle: ActionBarDrawerToggle
     private lateinit var binding: ActivityMainBinding
+    private lateinit var googleSignInClient: GoogleSignInClient
+
 
     @DelicateCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,17 +49,36 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.setCustomView(R.layout.custom_action_bar)
         setContentView(view)
 
+        val pref = getSharedPreferences("user_details", MODE_PRIVATE)
+        val editor = pref.edit()
+
+        val gso = GoogleSignInOptions
+            .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestEmail()
+            .build()
+
+        googleSignInClient = GoogleSignIn.getClient(this,gso)
 
         Firebase.firestore.collection("users").document(Firebase.auth.uid.toString())
             .get().addOnSuccessListener {
                 if (it != null){
-                    val b = binding.navigationView.getHeaderView(0)
-                    b.findViewById<TextView>(R.id.userTop).text = it.getString("name")
-                    b.findViewById<TextView>(R.id.image).text = it.getString("name")?.get(0)?.toUpperCase().toString()
+                    val name = it.getString("name")
+                    val image = it.getString("name")?.get(0)?.toUpperCase().toString()
+
+                    editor.putString("name",name)
+                    editor.putString("image",image)
+                    editor.apply()
+
                 }else{
+                    editor.clear().apply()
                     Toast.makeText(this,"Can't fetch data",Toast.LENGTH_SHORT).show()
                 }
+                val b = binding.navigationView.getHeaderView(0)
+                b.findViewById<TextView>(R.id.userTop).text = pref.getString("name","User")
+                b.findViewById<TextView>(R.id.image).text = pref.getString("image","U")
+
             }
+
 
         binding.navigationView.setNavigationItemSelectedListener {
             when(it.itemId){
@@ -65,7 +92,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 R.id.share ->{
                     val sendIntent : Intent = Intent().apply {
                         action = Intent.ACTION_SEND
-                        putExtra(Intent.EXTRA_TEXT,"Check out this : ")
+                        putExtra(Intent.EXTRA_TEXT,"https://digitronglobal.com/ ")
                         type = "text/plain"
                     }
                     val shareIntent = Intent.createChooser(sendIntent,"Share via")
@@ -104,8 +131,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     @DelicateCoroutinesApi
     private fun signOut() {
         Firebase.auth.signOut()
+
         startActivity(Intent(this,SignIn::class.java))
         finish()
+
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

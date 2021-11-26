@@ -40,13 +40,26 @@
             android:id="@+id/price"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/title"
+            android:layout_below="@id/category"
             android:layout_marginStart="33dp"
+            android:layout_marginTop="10dp"
             android:text="₹2,499.00"
             android:textAlignment="textStart"
             android:textColor="@color/black"
             android:textSize="26sp"
             android:textStyle="bold"
+            tools:ignore="HardcodedText" />
+
+        <TextView
+            android:id="@+id/category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/title"
+            android:layout_marginStart="30dp"
+            android:text="₹2,499.00"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="14sp"
             tools:ignore="HardcodedText" />
 
         <androidx.cardview.widget.CardView
@@ -84,9 +97,6 @@
                 android:layout_marginTop="63dp"
                 android:layout_marginEnd="15dp"
                 android:layout_marginBottom="10dp"
-                android:ellipsize="end"
-                android:ems="3"
-                android:maxLines="8"
                 android:fontFamily="serif-monospace"
                 android:lineSpacingExtra="3dp"
                 android:textColor="@color/black"

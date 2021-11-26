@@ -9,9 +9,11 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.text.Html
+import android.util.LayoutDirection
 import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.RadioButton
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
@@ -19,6 +21,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.view.MenuItemCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import com.example.digitron.database.ProductData
 import com.example.digitron.database.ProductDetails
 import com.example.digitron.database.ProductsViewModel
 import com.example.digitron.databinding.ActivityProductsPageBinding
@@ -29,20 +32,17 @@ import com.example.digitron.productFiles.ProductsList
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 import kotlin.properties.Delegates
 
 class ProductsPage : AppCompatActivity() {
 
-    private lateinit var images: Array<Int>
-    private lateinit var titles: Array<String>
-    private lateinit var category: Array<String>
     private lateinit var viewModel: ProductsViewModel
     private lateinit var productsListAdapter: ProductsList
-    private lateinit var list: MutableList<ProductDetails>
+    private lateinit var list: ArrayList<ProductDetails>
     private lateinit var binding: ActivityProductsPageBinding
-    private lateinit var tempList: MutableList<ProductDetails>
 
-    private var radioButton by Delegates.notNull<Int>()
+    private lateinit var tempList: ArrayList<ProductDetails>
 
     @SuppressLint("NotifyDataSetChanged", "CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,40 +54,15 @@ class ProductsPage : AppCompatActivity() {
         supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.red)))
         setContentView(view)
 
-        val sharedPreferences = getSharedPreferences("id", MODE_PRIVATE)
-        radioButton = sharedPreferences.getInt("radioButton",0)
-
-        images  = arrayOf(R.drawable.`as`,R.drawable.aap,R.drawable.billing_software,R.drawable.email_verifier,
-            R.drawable.wb,R.drawable.cle,R.drawable.c_r_m,R.drawable.cs,R.drawable.cwd,R.drawable.dbc,R.drawable.dwd,R.drawable.dw,
-            R.drawable.ewd,R.drawable.ew,R.drawable.elearning,R.drawable.elearning_portal_development,R.drawable.ecommerce_website_promotion,
-            R.drawable.es,R.drawable.eapwe,R.drawable.em,R.drawable.ess,R.drawable.fle,R.drawable.fad,R.drawable.ga,R.drawable.google_maps_lead_extractor,
-            R.drawable.hospital_management_software,R.drawable.had,R.drawable.indiamart,R.drawable.iad,R.drawable.iso,
-            R.drawable.mlm,R.drawable.mam,R.drawable.mn,R.drawable.rnad,R.drawable.rspd,R.drawable.saps,
-            R.drawable.seo,R.drawable.smapep,R.drawable.smm,R.drawable.smo,R.drawable.static_website,R.drawable.swd,R.drawable.wb,
-            R.drawable.wdp)
-
-        titles = arrayOf("Accommodation Software","Android App Development","Billing Software","Bulk Email Verifier","Bulk Messenger","Company Lead Extractor",
-        "CRM","Custom Software","Custom Web Designing","Digital Business Card","Dynamic Web Designing","Dynamic Website","E-commerce Web Designing","E-commerce Website",
-        "E-learning app","E-learning Portal Development","Ecommerce Website Promotion","Educational Software","Email & Phone Web Extractor","Email Marketing",
-        "Enterprise Software Solution","Facebook Lead Extractor","Flutter App Development","Google Adwords","Googlemap Lead Extractor","Hospital Management Software",
-        "Hybrid App Development","Indiamart Extractor","Iconic App Development","Ios App Development","Just Dial Data Extractor","Linkedin Extractor","LMS Software",
-        "MLM Software","Mobile App Maintenance","Mobile Number Lookup","React Native App Development","Real Estate Portal Development","Sales & Purchase Software",
-        "SEO Marketing","Social Email Phone Extractor Pro","Social Media Marketing","Static Web Designing","Static Website","TradeIndia Lead Extractor","Transportation Software",
-        "Web Portal Development")
-
-        category = arrayOf("Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web",
-            "Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web",
-            "Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web",
-            "Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web",
-            "Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web","Mobile","Software","Web")
-
         list = ArrayList()
-        images.sortedArray()
-        titles.sortedArray()
+        tempList = ArrayList()
+
+
+        val pro = ProductData(this)
 
         viewModel = ViewModelProvider(this)[ProductsViewModel::class.java]
-        for ((id, i) in (images.indices).withIndex()){
-            val product = ProductDetails(id,images[i],titles[i],category[i],"description","Highlights",(1000..10000).random())
+        for (i in pro.titles.indices){
+            val product = ProductDetails(i,pro.images[i],pro.titles[i],pro.category[i],pro.description[i],pro.highlights[i],pro.price[i].toInt())
             list.add(product)
             viewModel.addProducts(product)
         }
@@ -105,34 +80,19 @@ class ProductsPage : AppCompatActivity() {
         val search = menu.findItem(R.id.search_bar)
         val searchView = search.actionView as SearchView
 
-//        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
-//
-//            @SuppressLint("NotifyDataSetChanged")
-//            override fun onQueryTextChange(newText: String?): Boolean {
-//                tempList.clear()
-//                val searchText = newText?.lowercase(Locale.getDefault())
-//
-//                if (searchText!!.isNotEmpty()) {
-//                    list.forEach {
-//                        if (it.title.contains(searchText)) {
-//                            tempList.add(it)
-//                        }
-//                    }
-////                    binding.listItem.adapter!!.notifyDataSetChanged()
-//                }
-////                }else{
-////                    tempList.clear()
-////                    list.addAll(tempList)
-////                    binding.listItem.adapter!!.notifyDataSetChanged()
-////                }
-//                return false
-//            }
-//
-//            override fun onQueryTextSubmit(query: String?): Boolean {
-//                return true
-//            }
-//
-//        })
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener{
+
+            @SuppressLint("NotifyDataSetChanged")
+            override fun onQueryTextChange(newText: String?): Boolean {
+                productsListAdapter.filter.filter(newText)
+                return false
+            }
+
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+        })
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -154,11 +114,11 @@ class ProductsPage : AppCompatActivity() {
         bottomSheetDialog.show()
 
         val sharedPreferences = getSharedPreferences("id", MODE_PRIVATE)
-        val radioButton = sharedPreferences.getInt("radioButton",0)
+        val radioButton1 = sharedPreferences.getInt("radioButton1",0)
         val editor1 = sharedPreferences.edit()
 
 
-        when (radioButton) {
+        when (radioButton1) {
             0 -> {
                 bind.dataExtractor.isChecked = true
             }
@@ -194,44 +154,46 @@ class ProductsPage : AppCompatActivity() {
         bind.sortGroup.setOnCheckedChangeListener { _, checkedId ->
             when(checkedId){
                 R.id.dataExtractor ->{
-                    editor1.putInt("radioButton",0)
-                    list.sortBy { it.category.contains("Software") }
+                    editor1.putInt("radioButton1",0)
+                    productsListAdapter.filter.filter("Data Extractor")
                 }
                 R.id.digitalMarketing ->{
-                    editor1.putInt("radioButton",1)
-                    list.sortBy { it.category.contains("Digital Marketing") }
+                    editor1.putInt("radioButton1",1)
+                    productsListAdapter.filter.filter("Digital Marketing")
                 }
                 R.id.mobile ->{
-                    editor1.putInt("radioButton",2)
-                    list.sortBy { it.title.contains("Mobile")}
+                    editor1.putInt("radioButton1",2)
+                    productsListAdapter.filter.filter("Mobile")
                 }
                 R.id.mobileApp ->{
-                    editor1.putInt("radioButton",3)
-                    list.sortBy { it.category.contains("Mobile App")}
+                    editor1.putInt("radioButton1",3)
+                    productsListAdapter.filter.filter("Mobile App")
+
                 }
                 R.id.mobileAppDevelopment ->{
-                    editor1.putInt("radioButton",4)
-                    list.sortBy { it.category.contains("Mobile App Development") }
+                    editor1.putInt("radioButton1",4)
+                    productsListAdapter.filter.filter("Mobile App Development")
                 }
                 R.id.software ->{
-                    editor1.putInt("radioButton",5)
-                    list.sortBy { it.category.contains("Software") }
+                    editor1.putInt("radioButton1",5)
+                    productsListAdapter.filter.filter("Software")
+
                 }
                 R.id.uncategorized ->{
-                    editor1.putInt("radioButton",6)
-                    list.sortBy { it.category.contains("Uncategorized")}
+                    editor1.putInt("radioButton1",6)
+                    productsListAdapter.filter.filter("Uncategorized")
                 }
                 R.id.webDevelopment ->{
-                    editor1.putInt("radioButton",7)
-                    list.sortBy { it.category.contains("Web Development") }
+                    editor1.putInt("radioButton1",7)
+                    productsListAdapter.filter.filter("Web Development")
                 }
                 R.id.website ->{
-                    editor1.putInt("radioButton",8)
-                    list.sortBy { it.category.contains("Website") }
+                    editor1.putInt("radioButton1",8)
+                    productsListAdapter.filter.filter("Website")
                 }
                 R.id.websiteDesigning ->{
-                    editor1.putInt("radioButton",9)
-                    list.sortBy { it.category.contains("Website Designing") }
+                    editor1.putInt("radioButton1",9)
+                    productsListAdapter.filter.filter("Website Designing")
                 }
 
             }

@@ -2,6 +2,7 @@ package com.example.digitron.navigationComponent
 
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.net.Uri
@@ -48,17 +49,30 @@ class AccountDetails : AppCompatActivity(), View.OnClickListener {
         supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.red)))
         setContentView(view)
 
+        val pref = getSharedPreferences("user_details", MODE_PRIVATE)
+        val editor = pref.edit()
 
             Firebase.firestore.collection("users").document(Firebase.auth.uid.toString())
                 .get().addOnSuccessListener {
                     if (it != null) {
-                        binding.name.setText(it.getString("name"))
-                        binding.email.setText(it.getString("email"))
-                        binding.userImage.text = it.getString("name")?.get(0)?.toUpperCase().toString()
+                        GlobalScope.launch(Dispatchers.IO) {
+                            val name = it.getString("name")
+                            val email = it.getString("email")
+                            val userImage = it.getString("name")?.get(0)?.toUpperCase().toString()
+
+                            editor.putString("name",name)
+                            editor.putString("email",email)
+                            editor.putString("image",userImage)
+                            editor.apply()
+                        }
                     } else {
+                        editor.clear().apply()
                         Toast.makeText(this@AccountDetails, "Can't fetch data", Toast.LENGTH_SHORT)
                             .show()
                     }
+                    binding.name.setText(pref.getString("name","Username"))
+                    binding.email.setText(pref.getString("email","username@gmail.com"))
+                    binding.userImage.text = pref.getString("image","")
                 }
 
 

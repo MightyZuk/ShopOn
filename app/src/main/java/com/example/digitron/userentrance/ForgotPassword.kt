@@ -1,9 +1,12 @@
 package com.example.digitron.userentrance
 
+import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Patterns
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import com.example.digitron.R
 import com.example.digitron.databinding.ActivityForgotPasswordBinding
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -16,6 +19,8 @@ class ForgotPassword : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityForgotPasswordBinding.inflate(layoutInflater)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        window.statusBarColor = ContextCompat.getColor(this, R.color.red)
+        supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.red)))
         setContentView(binding.root)
 
         auth = Firebase.auth

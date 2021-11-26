@@ -44,6 +44,6 @@ class CartRecyclerview(val context: Context): RecyclerView.Adapter<CartRecyclerv
     }
 
     override fun getItemCount(): Int {
-        return 10
+        return 2
     }
 }

@@ -260,7 +260,7 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:onClick="takeMeToInstagram"
-        android:src="@drawable/insta"
+        android:src="@drawable/ic_instagram_square_brands"
         app:layout_constraintBottom_toBottomOf="@+id/facebook"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.05"

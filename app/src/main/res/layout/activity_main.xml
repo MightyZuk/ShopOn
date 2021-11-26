@@ -182,8 +182,7 @@
                 android:layout_below="@id/textView"
                 android:layout_marginStart="50dp"
                 android:layout_marginTop="10dp"
-                android:src="@drawable/ic_facebook_square_brands"
-                />
+                android:src="@drawable/ic_facebook_square_brands" />
 
             <ImageView
                 android:id="@+id/insta"
@@ -195,7 +194,7 @@
                 android:layout_marginTop="0dp"
                 android:layout_marginBottom="0dp"
                 android:layout_toEndOf="@+id/fb"
-                android:src="@drawable/insta" />
+                android:src="@drawable/ic_instagram_square_brands" />
 
             <ImageView
                 android:id="@+id/linked"

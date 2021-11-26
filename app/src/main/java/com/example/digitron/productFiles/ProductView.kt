@@ -18,6 +18,9 @@ import com.example.digitron.database.ProductDetails
 import com.example.digitron.databinding.ActivityProductViewBinding
 
 class ProductView : AppCompatActivity() {
+
+    private lateinit var addToCartItems : MutableList<ProductDetails>
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,39 +36,29 @@ class ProductView : AppCompatActivity() {
         val image = intent.getIntExtra("image",0)
         val text = intent.getStringExtra("title")
         val price = intent.getIntExtra("price",0)
+        val category = intent.getStringExtra("category")
+        val description = intent.getStringExtra("description")
+        val highlights = intent.getStringExtra("highlights")
 
         binding.title.text = text.toString()
 
         binding.productImage.setImageResource(image)
+        binding.category.text = "Category : $category"
         binding.price.text = "₹ $price"
 
-        binding.details.text = "* The company Leads Extractor tool can smartly collect bulk customer data for digital marketing purposes.\n" +
-                "* Extracts all email addresses and phone numbers from the source.\n" +
-                "* This extractor is the FASTEST Software available on the internet.\n" +
-                "* It is designed to extract email addresses and phone numbers with various criteria & various options to give the best results.\n" +
-                "* The extracted email addresses and phone numbers can be saved such as.CSV or excel files.\n" +
-                "* The extractor can UPDATE automatically, which helps you to get new features.\n" +
-                "* It can extract 1000 emails & phone numbers from multiple files in a minute.\n" +
-                "* Users can collect thousands of leads in one click.\n" +
-                "* Targeted search for email addresses & contact numbers using keywords & input files.\n" +
-                "* Unlimited data extraction no limitation at all.\n" +
-                "* Multithreaded process for faster intelligent extraction.\n" +
-                "* Automatic updates are with new features and settings instantly.\n" +
-                "* The software has options to START – PAUSE – STOPin running mode.\n" +
-                "* Users can export collected data into CSV or excel file format."
+        binding.details.text = highlights
 
-        binding.descript.text = "Ecommerce website design is the process of creating an online store for your business to sell digitally to target consumers. To design an e-commerce website, you need to plan, conceptualize, and arrange your content and products for effective display on the Internet."
+        binding.descript.text = description
 
-
-        binding.card.setOnClickListener {
-            if (binding.details.maxLines <= 8){
-                binding.details.setLines(35)
-                binding.details.setEms(0)
-            }else{
-                binding.details.setLines(8)
-                binding.details.setEms(3)
-            }
-        }
+//        binding.card.setOnClickListener {
+//            if (binding.details.maxLines <= 8){
+//                binding.details.setLines(highlights!!.length)
+//                binding.details.setEms(0)
+//            }else{
+//                binding.details.setLines(8)
+//                binding.details.setEms(3)
+//            }
+//        }
 
         binding.buyNow.setOnClickListener {
             startActivity(Intent(this,Cart::class.java))
@@ -77,7 +70,7 @@ class ProductView : AppCompatActivity() {
     }
 
     private fun addToCart() {
-        val current = intent.getStringExtra("current")
+        
 
     }
 
