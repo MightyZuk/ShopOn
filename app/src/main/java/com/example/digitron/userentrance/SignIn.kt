@@ -180,9 +180,7 @@ class SignIn : AppCompatActivity(), View.OnClickListener {
 
     private fun updateUI(firebaseUser: FirebaseUser?) {
         if(firebaseUser != null) {
-            val user = UserDetails(firebaseUser.uid,
-                firebaseUser.displayName.toString(),
-                firebaseUser.email.toString())
+            val user = UserDetails(firebaseUser.displayName.toString(), firebaseUser.email.toString())
 
             val usersDao = UserDao()
             usersDao.addUser(user)

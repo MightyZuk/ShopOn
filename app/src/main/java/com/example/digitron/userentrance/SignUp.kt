@@ -194,7 +194,7 @@ class SignUp : AppCompatActivity(), View.OnClickListener {
                 if (it.isSuccessful){
                     auth.currentUser!!.sendEmailVerification()
                     Toast.makeText(this,"Please click on email for verification",Toast.LENGTH_SHORT).show()
-                    val user = UserDetails(auth.uid.toString(),username,email)
+                    val user = UserDetails(username,email)
                     val dao = UserDao()
                     dao.addUser(user)
                     startActivity(Intent(this,SignIn::class.java))

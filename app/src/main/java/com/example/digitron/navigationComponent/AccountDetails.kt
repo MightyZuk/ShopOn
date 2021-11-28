@@ -38,6 +38,8 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.text.DateFormat
+import java.text.SimpleDateFormat
 
 class AccountDetails : AppCompatActivity(), View.OnClickListener {
 
@@ -56,7 +58,7 @@ class AccountDetails : AppCompatActivity(), View.OnClickListener {
         val pref = getSharedPreferences("user_details", MODE_PRIVATE)
         val editor = pref.edit()
 
-            Firebase.firestore.collection("users").document(Firebase.auth.uid.toString())
+            Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.displayName.toString())
                 .get().addOnSuccessListener {
                     if (it != null) {
                         GlobalScope.launch(Dispatchers.IO) {

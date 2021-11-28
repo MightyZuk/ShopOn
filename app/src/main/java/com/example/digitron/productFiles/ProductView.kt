@@ -9,18 +9,35 @@ import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.ActionBar
 import androidx.core.content.ContextCompat
 import androidx.core.text.trimmedLength
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModelProvider
 import com.example.digitron.ProductsPage
 import com.example.digitron.R
 import com.example.digitron.database.ProductDetails
+import com.example.digitron.database.ProductsDao
+import com.example.digitron.database.ProductsViewModel
 import com.example.digitron.databinding.ActivityProductViewBinding
+import com.example.digitron.userDatabase.UserDao
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class ProductView : AppCompatActivity() {
 
-    private lateinit var addToCartItems : MutableList<ProductDetails>
+    private lateinit var addToCartItems : HashMap<String,ProductDetails>
+    private lateinit var viewModel: ProductsViewModel
 
+    @DelicateCoroutinesApi
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,6 +49,8 @@ class ProductView : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.red)))
         setContentView(view)
+
+        viewModel = ViewModelProvider(this)[ProductsViewModel::class.java]
 
         val image = intent.getIntExtra("image",0)
         val text = intent.getStringExtra("title")
@@ -65,13 +84,25 @@ class ProductView : AppCompatActivity() {
         }
 
         binding.addToCart.setOnClickListener{
-            addToCart()
+            GlobalScope.launch(Dispatchers.IO) {
+                addToCart()
+            }
+            Toast.makeText(this,"Item added to cart",Toast.LENGTH_SHORT).show()
         }
     }
 
+    @DelicateCoroutinesApi
     private fun addToCart() {
-        
+        addToCartItems = HashMap()
+        val title = intent.getStringExtra("title")
+        if (title != null) {
+         val product = viewModel.getProductByTitle(title)
+            addToCartItems[Firebase.auth.currentUser.toString()] = product
 
+            val user = Firebase.auth.currentUser
+            val dao = UserDao()
+            dao.updateCartItems(user,addToCartItems,title)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -87,6 +118,11 @@ class ProductView : AppCompatActivity() {
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    override fun onBackPressed() {
+        onSupportNavigateUp()
+        super.onBackPressed()
     }
 
 }

@@ -372,7 +372,7 @@ class ProductData(val context: Context){
                 " Front-end agnostic\n" +
                 "Trusted by companies small and large\n" +
                 "Fueled by a developer-centric community",
-        "Great Security: iPhone app development for businesses requires adherence to high-quality standards of Apple’s Play Store.\n" +
+        "Great Security: iPhone app development for businesses requires adherence to high-quality standards of Apple’s App Store.\n" +
                 "Amazing User Experience: The inherent capabilities of Apple iOS offer an excellent user experience.\n" +
                 "Simpler Yet Effective Testing Practices: Apple has a lesser number of devices in the market, and therefore the versions.",
         "JustDial Data Extractor is the most powerful and easy-to-use data extraction software for web scraping and data extraction from Justdial websites. JustDial Data Extractor will benefit a wide range of computer users. Let’s say, for example, you need to extract all business (names, address, City, WhatsApp Contact no’s and Phone Numbers, etc.) from the JustDial website. It’s may save you plenty of effort and an endless string of browsing hours!\n" +

@@ -1,6 +1,7 @@
 package com.example.digitron.database
 
 import androidx.lifecycle.LiveData
+import com.google.firebase.auth.FirebaseUser
 
 class ProductsRepository(private val productsDao: ProductsDao) {
 
@@ -9,4 +10,10 @@ class ProductsRepository(private val productsDao: ProductsDao) {
     suspend fun addProduct(productsDetails: ProductDetails){
         productsDao.addProducts(productsDetails)
     }
+
+    fun getProductsByTitle(title: String): ProductDetails{
+        return productsDao.getProductByTitle(title)
+    }
+
+
 }

@@ -30,24 +30,24 @@
         android:elevation="10dp"
         android:layout_height="wrap_content">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/sort"
-            android:paddingBottom="5dp"
-            app:iconSize="20dp"
-            android:layout_gravity="center"
-            android:onClick="sortBottomSheet"
-            app:iconTint="@color/red"
-            app:iconGravity="textStart"
-            android:background="@color/white"
-            app:icon="@drawable/sort_image"
-            android:text="@string/sort"
-            android:textColor="@color/red"
-            android:textAllCaps="false"
-            android:textSize="17sp"
-            android:layout_weight="1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            tools:ignore="UsingOnClickInXml" />
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/sort"-->
+<!--            android:paddingBottom="5dp"-->
+<!--            app:iconSize="20dp"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:onClick="sortBottomSheet"-->
+<!--            app:iconTint="@color/red"-->
+<!--            app:iconGravity="textStart"-->
+<!--            android:background="@color/white"-->
+<!--            app:icon="@drawable/sort_image"-->
+<!--            android:text="@string/sort"-->
+<!--            android:textColor="@color/red"-->
+<!--            android:textAllCaps="false"-->
+<!--            android:textSize="17sp"-->
+<!--            android:layout_weight="1"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            tools:ignore="UsingOnClickInXml" />-->
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/filter"

@@ -7,9 +7,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.example.digitron.database.ProductDetails
 import com.example.digitron.databinding.OrderDetailsLayoutBinding
 
-class CartRecyclerview(val context: Context): RecyclerView.Adapter<CartRecyclerview.ItemViewHolder>() {
+class CartRecyclerview(val context: Context,val list: ArrayList<ProductDetails>): RecyclerView.Adapter<CartRecyclerview.ItemViewHolder>() {
 
     private lateinit var binding: OrderDetailsLayoutBinding
 
@@ -22,8 +23,18 @@ class CartRecyclerview(val context: Context): RecyclerView.Adapter<CartRecyclerv
 
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        var n = 0
+        val current = list[position]
+        val title = current.title
+        val image = current.image
+        val category = current.category
+        val price = current.price
 
+        binding.imageOfProduct.setImageResource(image)
+        binding.categoryOfProduct.text = category
+        binding.titleOfProduct.text = title
+        binding.priceOfProduct.text = "₹ $price"
+
+        var n = 0
         binding.plus.setOnClickListener {
             n += 1
             if (n <= 10){
@@ -44,6 +55,6 @@ class CartRecyclerview(val context: Context): RecyclerView.Adapter<CartRecyclerv
     }
 
     override fun getItemCount(): Int {
-        return 2
+        return list.size
     }
 }

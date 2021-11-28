@@ -1,6 +1,5 @@
 package com.example.digitron.database
 
-import android.content.ClipDescription
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 

@@ -4,6 +4,7 @@ import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
@@ -23,4 +24,10 @@ class ProductsViewModel(application: Application): AndroidViewModel(application)
             repository.addProduct(productsDetails)
         }
     }
+
+    fun getProductByTitle(title: String): ProductDetails{
+        return repository.getProductsByTitle(title)
+    }
+
+
 }

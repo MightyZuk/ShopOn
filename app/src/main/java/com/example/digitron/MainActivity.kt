@@ -59,7 +59,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
         googleSignInClient = GoogleSignIn.getClient(this,gso)
 
-        Firebase.firestore.collection("users").document(Firebase.auth.uid.toString())
+        Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.displayName.toString())
             .get().addOnSuccessListener {
                 if (it != null){
                     val name = it.getString("name")
@@ -76,6 +76,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val b = binding.navigationView.getHeaderView(0)
                 b.findViewById<TextView>(R.id.userTop).text = pref.getString("name","User")
                 b.findViewById<TextView>(R.id.image).text = pref.getString("image","U")
+                b.findViewById<TextView>(R.id.image).setOnLongClickListener {
+                    Toast.makeText(this,"developed by MightyZuk", Toast.LENGTH_SHORT).show()
+                    true
+                }
 
             }
 
@@ -131,7 +135,6 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     @DelicateCoroutinesApi
     private fun signOut() {
         Firebase.auth.signOut()
-
         startActivity(Intent(this,SignIn::class.java))
         finish()
 

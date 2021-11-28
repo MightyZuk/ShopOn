@@ -41,6 +41,6 @@
         android:text="@string/user"
         android:textColor="@color/white"
         android:textSize="20sp"
-        android:textStyle="bold|italic" />
+        android:textStyle="bold" />
 
 </RelativeLayout>

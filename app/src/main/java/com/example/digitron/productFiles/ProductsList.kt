@@ -70,9 +70,8 @@ class ProductsList(private val context: Context,
         return object : Filter() {
             override fun performFiltering(constraint: CharSequence?): FilterResults {
                 val charSearch = constraint.toString()
-                val b = ActivityProductsPageBinding.inflate(LayoutInflater.from(context))
-                if (charSearch.isEmpty()) {
-                    newList = productDetails
+                newList = if (charSearch.isEmpty()) {
+                    productDetails
                 }else {
                     val resultList = ArrayList<ProductDetails>()
                     for (row in productDetails) {
@@ -81,7 +80,7 @@ class ProductsList(private val context: Context,
                             resultList.add(row)
                         }
                     }
-                    newList = resultList
+                    resultList
                 }
                 val filterResults = FilterResults()
                 filterResults.values = newList

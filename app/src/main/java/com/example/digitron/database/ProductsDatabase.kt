@@ -24,9 +24,8 @@ abstract class ProductsDatabase: RoomDatabase() {
                     context.applicationContext,
                     ProductsDatabase::class.java,
                     "products_database").build()
-
-                INSTANCE = instance
-                return instance
+                    INSTANCE = instance
+                    return instance
             }
         }
     }
