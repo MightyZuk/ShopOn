@@ -29,7 +29,18 @@ class CartRecyclerview(val context: Context,val list: ArrayList<ProductDetails>)
         val category = current.category
         val price = current.price
 
-        binding.imageOfProduct.setImageResource(image)
+        holder.itemView.setOnClickListener{
+            val intent = Intent(context,ProductView::class.java)
+            intent.putExtra("title",title)
+            intent.putExtra("image",image)
+            intent.putExtra("category",category)
+            intent.putExtra("description",current.description)
+            intent.putExtra("highlights",current.highlights)
+            intent.putExtra("price",price)
+            it.context.startActivity(intent)
+        }
+
+        binding.imageOfProduct.setImageResource(image!!)
         binding.categoryOfProduct.text = category
         binding.titleOfProduct.text = title
         binding.priceOfProduct.text = "₹ $price"

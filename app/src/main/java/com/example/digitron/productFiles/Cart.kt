@@ -31,7 +31,7 @@ class Cart : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val binding = ActivityCartBinding.inflate(layoutInflater)
         val view = binding.root
-        supportActionBar?.title = "Shopping bag"
+        supportActionBar?.title = "Shopping Cart"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.red)))
         window.statusBarColor = ContextCompat.getColor(this,R.color.red)
@@ -42,31 +42,28 @@ class Cart : AppCompatActivity() {
 
         Firebase.firestore.collection("users").document(Firebase.auth.currentUser!!.displayName.toString())
             .collection("cartItems").get().addOnSuccessListener {
-                if (it != null){
-                    for (items in it){
-                        val title = items.getString("title")
-                        val price = items.getString("price")
-                        val image = items.getString("image")
-                        val category = items.getString("category")
-                        val id = items.getString("id")
-                        val description = items.getString("description")
-                        val highlights = items.getString("highlights")
-//                        val product = ProductDetails(id!!.toInt(),image!!.toInt(),title.toString(),category.toString(),
-//                        description.toString(),highlights.toString(),price!!.toInt())
+                if (it != null) {
+                    for (doc in it) {
+                        val key = doc.id
+                        val value = doc.data.values
+                        val valu = value.size
+                        Log.d("title",valu.toString())
 
                         var n = 1
 
-                        val product = ProductDetails(0,0,title.toString(),category.toString(),"","",n)
+                        val product = ProductDetails(0, R.drawable.`as`, doc.id, null, "", "", n)
                         cartItemsList.add(product)
+
                     }
                     binding.cartItems.visibility = View.VISIBLE
                     binding.bottomNavigationView.visibility = View.VISIBLE
                     binding.emptyLayout.visibility = View.GONE
-                }else{
+                } else {
                     binding.emptyLayout.visibility = View.VISIBLE
                     binding.cartItems.visibility = View.GONE
                     binding.bottomNavigationView.visibility = View.GONE
                 }
+
             }
 
 

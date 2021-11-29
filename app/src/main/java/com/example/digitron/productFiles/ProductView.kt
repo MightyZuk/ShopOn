@@ -3,30 +3,18 @@ package com.example.digitron.productFiles
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.graphics.drawable.ColorDrawable
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
-import android.view.View
 import android.widget.Toast
-import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.text.trimmedLength
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModelProvider
-import com.example.digitron.ProductsPage
 import com.example.digitron.R
 import com.example.digitron.database.ProductDetails
-import com.example.digitron.database.ProductsDao
 import com.example.digitron.database.ProductsViewModel
 import com.example.digitron.databinding.ActivityProductViewBinding
 import com.example.digitron.userDatabase.UserDao
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -97,11 +85,9 @@ class ProductView : AppCompatActivity() {
         val title = intent.getStringExtra("title")
         if (title != null) {
          val product = viewModel.getProductByTitle(title)
-            addToCartItems[Firebase.auth.currentUser.toString()] = product
-
-            val user = Firebase.auth.currentUser
+            addToCartItems[title] = product
             val dao = UserDao()
-            dao.updateCartItems(user,addToCartItems,title)
+            dao.updateCartItems(addToCartItems,title)
         }
     }
 
@@ -120,9 +106,9 @@ class ProductView : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    override fun onBackPressed() {
-        onSupportNavigateUp()
-        super.onBackPressed()
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        finish()
+        return super.onSupportNavigateUp()
     }
-
 }

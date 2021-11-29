@@ -35,9 +35,9 @@ class UserDao {
     }
 
     @DelicateCoroutinesApi
-    fun updateCartItems(user: FirebaseUser?,list: HashMap<String,ProductDetails>,title: String){
+    fun updateCartItems(list: HashMap<String,ProductDetails>,title: String){
         GlobalScope.launch(Dispatchers.IO) {
-            userCollection.document(user!!.displayName.toString()).collection("cartItems")
+            userCollection.document(Firebase.auth.currentUser!!.displayName.toString()).collection("cartItems")
                 .document(title).set(list)
         }
     }

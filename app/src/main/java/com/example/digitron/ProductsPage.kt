@@ -2,38 +2,26 @@ package com.example.digitron
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.content.SharedPreferences
-import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.text.Html
-import android.util.LayoutDirection
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
-import android.view.View
-import android.widget.RadioButton
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
-import androidx.core.view.MenuItemCompat
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.digitron.database.ProductData
 import com.example.digitron.database.ProductDetails
 import com.example.digitron.database.ProductsViewModel
 import com.example.digitron.databinding.ActivityProductsPageBinding
-import com.example.digitron.databinding.BottomSheetBinding
 import com.example.digitron.databinding.FilterBottomSheetBinding
 import com.example.digitron.productFiles.Cart
 import com.example.digitron.productFiles.ProductsList
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import java.util.*
 import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
-import kotlin.properties.Delegates
 
 class ProductsPage : AppCompatActivity() {
 
@@ -41,8 +29,6 @@ class ProductsPage : AppCompatActivity() {
     private lateinit var productsListAdapter: ProductsList
     private lateinit var list: ArrayList<ProductDetails>
     private lateinit var binding: ActivityProductsPageBinding
-
-
 
     @SuppressLint("NotifyDataSetChanged", "CommitPrefEdits")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,10 +45,11 @@ class ProductsPage : AppCompatActivity() {
         val pro = ProductData(this)
 
         viewModel = ViewModelProvider(this)[ProductsViewModel::class.java]
+
         for (i in pro.titles.indices){
             val product = ProductDetails(
                 i,pro.images[i],pro.titles[i],pro.category[i],
-                pro.description[i],pro.highlights[i],pro.price[i].toInt())
+                pro.description[i],pro.highlights[i],pro.price[i].toInt(),1,10)
             list.add(product)
             viewModel.addProducts(product)
         }

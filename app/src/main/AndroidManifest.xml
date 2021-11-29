@@ -47,7 +47,6 @@
         <activity
             android:name=".productFiles.ProductView"
             android:exported="false"
-            android:parentActivityName=".ProductsPage"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
         <activity

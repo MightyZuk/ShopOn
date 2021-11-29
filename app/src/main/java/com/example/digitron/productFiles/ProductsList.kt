@@ -38,7 +38,7 @@ class ProductsList(private val context: Context,
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int){
         val current = newList[position]
-        binding.productImage.setImageResource(current.image)
+        current.image?.let { binding.productImage.setImageResource(it) }
         binding.productTitle.text = current.title
         binding.category.text = current.category
         binding.productPrice.text = "₹"+current.price.toString()
@@ -75,8 +75,8 @@ class ProductsList(private val context: Context,
                 }else {
                     val resultList = ArrayList<ProductDetails>()
                     for (row in productDetails) {
-                        if (row.title.lowercase(Locale.getDefault()).contains(charSearch.lowercase(Locale.getDefault()))
-                            || row.category.lowercase(Locale.getDefault()).contains(charSearch.lowercase(Locale.getDefault()))){
+                        if (row.title!!.lowercase(Locale.getDefault()).contains(charSearch.lowercase(Locale.getDefault()))
+                            || row.category!!.lowercase(Locale.getDefault()).contains(charSearch.lowercase(Locale.getDefault()))){
                             resultList.add(row)
                         }
                     }

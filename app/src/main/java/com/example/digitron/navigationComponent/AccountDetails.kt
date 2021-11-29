@@ -34,10 +34,8 @@ import com.google.firebase.firestore.EventListener
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import kotlinx.coroutines.tasks.await
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 
@@ -58,7 +56,7 @@ class AccountDetails : AppCompatActivity(), View.OnClickListener {
         val pref = getSharedPreferences("user_details", MODE_PRIVATE)
         val editor = pref.edit()
 
-            Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.displayName.toString())
+            Firebase.firestore.collection("users").document(Firebase.auth.currentUser!!.displayName.toString())
                 .get().addOnSuccessListener {
                     if (it != null) {
                         GlobalScope.launch(Dispatchers.IO) {
@@ -70,15 +68,18 @@ class AccountDetails : AppCompatActivity(), View.OnClickListener {
                             editor.putString("email",email)
                             editor.putString("image",userImage)
                             editor.apply()
+
+                            withContext(Dispatchers.Main){
+                                binding.name.setText(pref.getString("name","Username"))
+                                binding.email.setText(pref.getString("email","username@gmail.com"))
+                                binding.userImage.text = pref.getString("image","")
+                            }
                         }
                     } else {
                         editor.clear().apply()
                         Toast.makeText(this@AccountDetails, "Can't fetch data", Toast.LENGTH_SHORT)
                             .show()
                     }
-                    binding.name.setText(pref.getString("name","Username"))
-                    binding.email.setText(pref.getString("email","username@gmail.com"))
-                    binding.userImage.text = pref.getString("image","")
                 }
 
 
