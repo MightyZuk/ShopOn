@@ -38,10 +38,14 @@ class ProductsList(private val context: Context,
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int){
         val current = newList[position]
+        val price = current.price
+        val formatter = NumberFormat.getCurrencyInstance(Locale("en","IN"))
+        val formattedPrice = formatter.format(price)
         current.image?.let { binding.productImage.setImageResource(it) }
         binding.productTitle.text = current.title
         binding.category.text = current.category
-        binding.productPrice.text = "₹"+current.price.toString()
+        binding.productPrice.text = formattedPrice
+
         holder.itemView.setOnClickListener {
             Intent(context,ProductView::class.java).also {
                 it.putExtra("image",current.image)

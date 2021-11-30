@@ -19,6 +19,9 @@ import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import java.text.NumberFormat
+import java.util.*
+import kotlin.collections.HashMap
 
 class ProductView : AppCompatActivity() {
 
@@ -48,10 +51,12 @@ class ProductView : AppCompatActivity() {
         val highlights = intent.getStringExtra("highlights")
 
         binding.title.text = text.toString()
+        val formatter = NumberFormat.getCurrencyInstance(Locale("en","IN"))
+        val formattedPrice = formatter.format(price)
 
         binding.productImage.setImageResource(image)
         binding.category.text = "Category : $category"
-        binding.price.text = "₹ $price"
+        binding.price.text = formattedPrice
 
         binding.details.text = highlights
 
@@ -83,12 +88,14 @@ class ProductView : AppCompatActivity() {
     private fun addToCart() {
         addToCartItems = HashMap()
         val title = intent.getStringExtra("title")
+
+        val dao = UserDao()
         if (title != null) {
-         val product = viewModel.getProductByTitle(title)
+            val product = title.let { viewModel.getProductByTitle(it) }
             addToCartItems[title] = product
-            val dao = UserDao()
             dao.updateCartItems(addToCartItems,title)
         }
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {

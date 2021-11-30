@@ -8,6 +8,7 @@ import android.os.Handler
 import android.os.Looper
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.SearchView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -60,7 +61,6 @@ class ProductsPage : AppCompatActivity() {
         binding.listItem.setHasFixedSize(true)
         binding.listItem.adapter = productsListAdapter
 
-
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -74,10 +74,15 @@ class ProductsPage : AppCompatActivity() {
             override fun onQueryTextChange(newText: String?): Boolean {
                 productsListAdapter.filter.filter(newText)
                 binding.listItem.adapter = productsListAdapter
-                return false
+                return true
             }
 
             override fun onQueryTextSubmit(query: String?): Boolean {
+                if (query != productsListAdapter.filter.toString()){
+                    binding.images!!.visibility = View.VISIBLE
+                    binding.record!!.visibility = View.VISIBLE
+                    binding.listItem.visibility = View.GONE
+                }
                 return false
             }
 
@@ -196,6 +201,7 @@ class ProductsPage : AppCompatActivity() {
             Handler(Looper.getMainLooper()).postDelayed({bottomSheetDialog.hide()},400)
         }
 
+
     }
 
 //    @SuppressLint("CommitPrefEdits"
@@ -249,5 +255,6 @@ class ProductsPage : AppCompatActivity() {
 //            Handler(Looper.getMainLooper()).postDelayed({bottom.hide()},400)
 //        }
 //    }
+
 
 }

@@ -1,18 +1,28 @@
 package com.example.digitron
 
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
+import android.view.Gravity
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContract
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.NonNull
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.core.content.PackageManagerCompat
 import androidx.core.view.GravityCompat
+import com.example.digitron.database.ProductDetails
 import com.example.digitron.databinding.ActivityMainBinding
 import com.example.digitron.navigationComponent.AccountDetails
 import com.example.digitron.navigationComponent.MyOrders
@@ -30,6 +40,7 @@ import com.google.firebase.ktx.Firebase
 import com.smarteist.autoimageslider.SliderAnimations
 import kotlinx.coroutines.DelicateCoroutinesApi
 import org.w3c.dom.Text
+import java.util.jar.Manifest
 
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
@@ -39,6 +50,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private lateinit var googleSignInClient: GoogleSignInClient
 
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     @DelicateCoroutinesApi
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -83,15 +95,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
             }
 
-
         binding.navigationView.setNavigationItemSelectedListener {
             when(it.itemId){
-                R.id.account -> startActivity(Intent(this,AccountDetails::class.java))
+                R.id.account -> {
+                    startActivity(Intent(this,AccountDetails::class.java))
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
+                }
                 R.id.logout -> {
                     signOut()
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
                 R.id.bag -> {
                     startActivity(Intent(this,Cart::class.java))
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
                 R.id.share ->{
                     val sendIntent : Intent = Intent().apply {
@@ -101,9 +117,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                     }
                     val shareIntent = Intent.createChooser(sendIntent,"Share via")
                     startActivity(shareIntent)
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
                     }
                 R.id.orders -> {
                     startActivity(Intent(this, MyOrders::class.java))
+                    binding.drawerLayout.closeDrawer(GravityCompat.START)
                 }
                 }
             true

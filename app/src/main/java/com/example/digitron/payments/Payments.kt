@@ -16,7 +16,12 @@ class Payments : AppCompatActivity() {
         supportActionBar?.setBackgroundDrawable(ColorDrawable(resources.getColor(R.color.red)))
         window.statusBarColor = ContextCompat.getColor(this, R.color.red)
         setContentView(binding.root)
+
+        val total = intent.getStringExtra("totalPrice")
+        binding.total.text = total
     }
+
+
 
     override fun onSupportNavigateUp(): Boolean {
         onBackPressed()

@@ -78,7 +78,7 @@ class SignIn : AppCompatActivity(), View.OnClickListener {
     }
 
 
-    private fun loadingDialog() {
+    fun loadingDialog() {
         dialog = Dialog(this)
         dialog.setCancelable(false)
         dialog.setContentView(R.layout.loading_dialog)
