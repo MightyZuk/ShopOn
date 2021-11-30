@@ -88,16 +88,17 @@ class Cart : AppCompatActivity() {
                     var totalPrice = total
                     val formatter = NumberFormat.getCurrencyInstance(Locale("en", "IN"))
                     formattedPrice = formatter.format(totalPrice)
-
-                    dialog.dismiss()
-                    binding.cartItems.visibility = View.VISIBLE
-                    binding.bottomNavigationView.visibility = View.VISIBLE
-                    binding.emptyLayout.visibility = View.GONE
                     binding.totalCost.text = formattedPrice
-                }else{
-                    binding.emptyLayout.visibility = View.VISIBLE
-                    binding.cartItems.visibility = View.GONE
-                    binding.bottomNavigationView.visibility = View.GONE
+                    dialog.dismiss()
+                    if (cartItemsList.isEmpty()){
+                        binding.cartItems.visibility = View.GONE
+                        binding.emptyLayout.visibility = View.VISIBLE
+                        binding.bottomNavigationView.visibility = View.GONE
+                    }else{
+                        binding.cartItems.visibility = View.VISIBLE
+                        binding.bottomNavigationView.visibility = View.VISIBLE
+                        binding.emptyLayout.visibility = View.GONE
+                    }
                 }
 
             }
