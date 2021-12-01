@@ -22,7 +22,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.NonDisposableHandle.parent
+import kotlinx.coroutines.launch
 import java.text.NumberFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -41,7 +43,7 @@ class CartRecyclerview(val context: Context,val list: ArrayList<ProductDetails>)
     }
 
     @DelicateCoroutinesApi
-    @SuppressLint("SetTextI18n")
+    @SuppressLint("SetTextI18n", "NotifyDataSetChanged")
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val current = list[position]
         val title = current.title
@@ -80,6 +82,10 @@ class CartRecyclerview(val context: Context,val list: ArrayList<ProductDetails>)
         val formattedPrice = formatter.format(price)
         binding.priceOfProduct.text = formattedPrice
 
+        val cart = ActivityCartBinding.inflate(LayoutInflater.from(context))
+
+        Log.d("title: ", list.size.toString())
+
         binding.remove.setOnClickListener {
             if (title == list[position].title) {
                 val dao = UserDao()
@@ -97,14 +103,11 @@ class CartRecyclerview(val context: Context,val list: ArrayList<ProductDetails>)
 
     @DelicateCoroutinesApi
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
     }
 
-    fun updateList(newList: ArrayList<ProductDetails>){
 
-    }
 }

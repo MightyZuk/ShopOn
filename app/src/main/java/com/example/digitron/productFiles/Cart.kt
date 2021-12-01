@@ -31,7 +31,7 @@ class Cart : AppCompatActivity() {
     private lateinit var dialog: Dialog
     private var formattedPrice by Delegates.notNull<String>()
 
-    @SuppressLint("RestrictedApi", "SetTextI18n")
+    @SuppressLint("RestrictedApi", "SetTextI18n", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val binding = ActivityCartBinding.inflate(layoutInflater)

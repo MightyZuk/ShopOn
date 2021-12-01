@@ -128,7 +128,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             true
         }
 
-        val images = arrayOf(R.drawable.wd,R.drawable.dm,R.drawable.crm)
+        val images = arrayOf(R.drawable.web_dev,R.drawable.dm,R.drawable.crm)
 
         val sliderAdapter = ImageAdapter(this,images)
 
