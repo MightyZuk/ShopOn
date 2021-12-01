@@ -8,22 +8,30 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.digitron.R
 import com.example.digitron.database.ProductDetails
+import com.example.digitron.databinding.ActivityCartBinding
 import com.example.digitron.databinding.OrderDetailsLayoutBinding
+import com.example.digitron.userDatabase.UserDao
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.NonDisposableHandle.parent
 import java.text.NumberFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
 
 class CartRecyclerview(val context: Context,val list: ArrayList<ProductDetails>):
-    RecyclerView.Adapter<CartRecyclerview.ItemViewHolder>(),
-    View.OnClickListener {
+    RecyclerView.Adapter<CartRecyclerview.ItemViewHolder>(),AdapterView.OnItemSelectedListener{
 
     private lateinit var binding: OrderDetailsLayoutBinding
-    private var number by Delegates.notNull<Int>()
 
     inner class ItemViewHolder(binding: OrderDetailsLayoutBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -32,6 +40,7 @@ class CartRecyclerview(val context: Context,val list: ArrayList<ProductDetails>)
         return ItemViewHolder(binding)
     }
 
+    @DelicateCoroutinesApi
     @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         val current = list[position]
@@ -39,13 +48,17 @@ class CartRecyclerview(val context: Context,val list: ArrayList<ProductDetails>)
         val image = current.image
         val category = current.category
         val price = current.price
-        var min = current.minQuantity
-        var max = current.maxQuantity
+        val min = current.minQuantity
+        val max = current.maxQuantity
 
-        number = min!!
+        val array = arrayOf(1,2,3,4,5,6,7,8)
 
-        binding.plus.setOnClickListener(this)
-        binding.minus.setOnClickListener(this)
+        val arrayAdapter = ArrayAdapter(context,android.R.layout.simple_spinner_item,array)
+        binding.quantityOfProduct.adapter = arrayAdapter
+        binding.quantityOfProduct.onItemSelectedListener = this
+
+//        binding.plus.setOnClickListener(this)
+//        binding.minus.setOnClickListener(this)
 
 
         holder.itemView.setOnClickListener{
@@ -60,31 +73,21 @@ class CartRecyclerview(val context: Context,val list: ArrayList<ProductDetails>)
         }
 
         val formatter: NumberFormat = NumberFormat.getCurrencyInstance(Locale("en", "IN"))
-        val formattedPrice = formatter.format(price)
 
         binding.imageOfProduct.setImageResource(image!!)
         binding.categoryOfProduct.text = category
         binding.titleOfProduct.text = title
+        val formattedPrice = formatter.format(price)
         binding.priceOfProduct.text = formattedPrice
-        binding.numberText.text = number.toString()
 
-//        var n = min
-//        binding.plus.setOnClickListener {
-//            n = n?.plus(1)
-//            if (n!! <= 10){
-//                binding.numberText.text = n.toString()
-//            }else{
-//                n = max
-//            }
-//        }
-//        binding.minus.setOnClickListener{
-//            n = min?.let { it1 -> n?.minus(it1) }
-//            if (n!! >= 0){
-//                binding.numberText.text = n.toString()
-//            }else{
-//                n = 0
-//            }
-//        }
+        binding.remove.setOnClickListener {
+            if (title == list[position].title) {
+                val dao = UserDao()
+                dao.deleteCartItems(Firebase.auth.currentUser, title.toString())
+                list.removeAt(position)
+                notifyItemRemoved(position)
+            }
+        }
 
     }
 
@@ -92,18 +95,16 @@ class CartRecyclerview(val context: Context,val list: ArrayList<ProductDetails>)
         return list.size
     }
 
-    override fun onClick(v: View?) {
-        var n = number
-        when(v?.id){
-            R.id.plus -> {
-                n += 1
-                number = n
-            }
-            R.id.minus -> {
-                n -= 1
-                number = n
-            }
-        }
+    @DelicateCoroutinesApi
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
     }
 
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+
+    }
+
+    fun updateList(newList: ArrayList<ProductDetails>){
+
+    }
 }

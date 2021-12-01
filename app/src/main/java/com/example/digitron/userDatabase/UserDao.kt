@@ -43,12 +43,22 @@ class UserDao {
     }
 
     @DelicateCoroutinesApi
-    fun deleteUser(user: FirebaseUser?){
+    fun deleteCartItems(user: FirebaseUser?,title: String){
         user.let {
             GlobalScope.launch(Dispatchers.IO) {
-                userCollection.document(user?.displayName.toString()).delete()
+                userCollection.document(user?.displayName.toString()).collection("cartItems")
+                    .document(title).delete()
             }
         }
     }
 
+    @DelicateCoroutinesApi
+    fun updateProductQuantity(user: FirebaseUser?, title: String){
+        user.let {
+            GlobalScope.launch {
+                userCollection.document(user?.displayName.toString()).collection("cartItems")
+                    .document(title).set(it!!)
+            }
+        }
+    }
 }

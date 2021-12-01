@@ -2,10 +2,13 @@ package com.example.digitron.productFiles
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.Color.red
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
+import android.view.*
+import android.widget.LinearLayout
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -15,6 +18,7 @@ import com.example.digitron.database.ProductDetails
 import com.example.digitron.database.ProductsViewModel
 import com.example.digitron.databinding.ActivityProductViewBinding
 import com.example.digitron.userDatabase.UserDao
+import com.google.android.material.snackbar.Snackbar
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -49,11 +53,16 @@ class ProductView : AppCompatActivity() {
         val category = intent.getStringExtra("category")
         val description = intent.getStringExtra("description")
         val highlights = intent.getStringExtra("highlights")
+        val minQuantity = intent.getStringExtra("minQuantity")
+        val maxQuantity = intent.getStringExtra("maxQuantity")
 
         binding.title.text = text.toString()
         val formatter = NumberFormat.getCurrencyInstance(Locale("en","IN"))
         val formattedPrice = formatter.format(price)
 
+        if (highlights!!.isEmpty()){
+            binding.card.visibility = View.GONE
+        }
         binding.productImage.setImageResource(image)
         binding.category.text = "Category : $category"
         binding.price.text = formattedPrice
@@ -79,8 +88,14 @@ class ProductView : AppCompatActivity() {
         binding.addToCart.setOnClickListener{
             GlobalScope.launch(Dispatchers.IO) {
                 addToCart()
+                val snack = Snackbar.make(binding.root,"Item added to cart ",Snackbar.LENGTH_SHORT)
+                snack.setActionTextColor(Color.parseColor("#FF5050"))
+                snack.setTextColor(Color.parseColor("#FFFFFF"))
+                snack.setAction("GO TO CART"){
+                    startActivity(Intent(this@ProductView,Cart::class.java))
+                }
+                snack.show()
             }
-            Toast.makeText(this,"Item added to cart",Toast.LENGTH_SHORT).show()
         }
     }
 

@@ -13,4 +13,4 @@ class ProductDetails(
     val highlights: String? = "",
     val price: Int? = null,
     var minQuantity : Int? = 1,
-    val maxQuantity: Int? = 1)
+    val maxQuantity: Int? = 10)

@@ -22,6 +22,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PackageManagerCompat
 import androidx.core.view.GravityCompat
+import androidx.core.view.get
 import com.example.digitron.database.ProductDetails
 import com.example.digitron.databinding.ActivityMainBinding
 import com.example.digitron.navigationComponent.AccountDetails
@@ -130,6 +131,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val images = arrayOf(R.drawable.wd,R.drawable.dm,R.drawable.crm)
 
         val sliderAdapter = ImageAdapter(this,images)
+
         binding.sliderView.setSliderAdapter(sliderAdapter)
         binding.sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
         binding.sliderView.startAutoCycle()

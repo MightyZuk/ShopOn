@@ -54,6 +54,8 @@ class ProductsList(private val context: Context,
                 it.putExtra("highlights",current.highlights)
                 it.putExtra("price",current.price)
                 it.putExtra("description",current.description)
+                it.putExtra("minQuantity",current.minQuantity)
+                it.putExtra("maxQuantity",current.maxQuantity)
                 context.startActivity(it) }
         }
     }
