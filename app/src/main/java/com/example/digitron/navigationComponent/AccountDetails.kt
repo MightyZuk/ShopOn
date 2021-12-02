@@ -68,12 +68,6 @@ class AccountDetails : AppCompatActivity(), View.OnClickListener {
                             editor.putString("email",email)
                             editor.putString("image",userImage)
                             editor.apply()
-
-                            withContext(Dispatchers.Main){
-                                binding.name.setText(pref.getString("name","Username"))
-                                binding.email.setText(pref.getString("email","username@gmail.com"))
-                                binding.userImage.text = pref.getString("image","")
-                            }
                         }
                     } else {
                         editor.clear().apply()
@@ -82,7 +76,9 @@ class AccountDetails : AppCompatActivity(), View.OnClickListener {
                     }
                 }
 
-
+        binding.userImage.text = pref.getString("image","U")
+        binding.email.setText(pref.getString("email","user@email.com"))
+        binding.name.setText(pref.getString("name","User Name"))
         binding.changePassword.setOnClickListener(this)
         binding.delete.setOnClickListener(this)
 

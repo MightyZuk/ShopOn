@@ -10,6 +10,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
+import com.google.firestore.v1.FirestoreGrpc
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -28,10 +29,6 @@ class UserDao {
                 userCollection.document(user!!.name).set(it!!)
             }
         }
-    }
-
-    fun getUserById(id: String): Task<DocumentSnapshot>{
-        return userCollection.document(id).get()
     }
 
     @DelicateCoroutinesApi
