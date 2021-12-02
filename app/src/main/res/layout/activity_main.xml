@@ -88,21 +88,46 @@
                 app:layout_constraintTop_toTopOf="parent"
                 tools:ignore="OnClick,UsingOnClickInXml" />
 
-            <com.smarteist.autoimageslider.SliderView
+            <ViewFlipper
                 android:id="@+id/sliderView"
                 android:layout_width="fill_parent"
                 android:layout_height="300dp"
+                android:flipInterval="2000"
+                android:autoStart="true"
+                android:inAnimation="@android:anim/slide_in_left"
+                android:outAnimation="@android:anim/slide_out_right"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.148"
-                app:sliderAnimationDuration="300"
-                app:sliderAutoCycleDirection="right"
-                app:sliderAutoCycleEnabled="true"
-                app:sliderScrollTimeInSec="2"
-                app:sliderStartAutoCycle="true" />
+                app:layout_constraintVertical_bias="0.148" >
+
+                <ImageView
+                    android:id="@+id/dm"
+                    android:src="@drawable/dm"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <ImageView
+                    android:id="@+id/crm"
+                    android:src="@drawable/crm"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <ImageView
+                    android:id="@+id/mad"
+                    android:src="@drawable/mad"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+                <ImageView
+                    android:id="@+id/wd"
+                    android:src="@drawable/wd"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </ViewFlipper>
 
             <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
                 android:id="@+id/shopNow"

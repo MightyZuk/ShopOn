@@ -37,6 +37,7 @@
         <activity
             android:name=".productFiles.Cart"
             android:exported="false"
+            android:parentActivityName=".ProductsPage"
             android:screenOrientation="portrait"
             tools:ignore="LockedOrientationActivity" />
 

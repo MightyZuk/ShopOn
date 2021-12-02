@@ -110,6 +110,12 @@ class ProductView : AppCompatActivity() {
             addToCartItems[title] = product
             dao.updateCartItems(addToCartItems,title)
         }
+        if (title != null && title == addToCartItems[title]?.title){
+            val product = title.let { viewModel.getProductByTitle(it)}
+            product.minQuantity = product.minQuantity?.plus(1)
+            addToCartItems[title] = product
+            dao.updateCartQuantity(title,addToCartItems)
+        }
 
     }
 

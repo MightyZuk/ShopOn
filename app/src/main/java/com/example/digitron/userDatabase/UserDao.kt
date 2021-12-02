@@ -11,6 +11,7 @@ import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import com.google.firestore.v1.FirestoreGrpc
+import com.squareup.okhttp.Dispatcher
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
@@ -50,12 +51,10 @@ class UserDao {
     }
 
     @DelicateCoroutinesApi
-    fun updateProductQuantity(user: FirebaseUser?, title: String){
-        user.let {
-            GlobalScope.launch {
-                userCollection.document(user?.displayName.toString()).collection("cartItems")
-                    .document(title).set(it!!)
-            }
+    fun updateCartQuantity(title: String, list: Map<String,ProductDetails> ){
+        GlobalScope.launch(Dispatchers.IO) {
+            userCollection.document(Firebase.auth.currentUser?.displayName.toString()).collection("cartItems")
+                .document(title).update(list)
         }
     }
 }

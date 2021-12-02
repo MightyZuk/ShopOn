@@ -60,6 +60,7 @@ class CartRecyclerview(val context: Context,val list: ArrayList<ProductDetails>)
         binding.quantityOfProduct.adapter = arrayAdapter
         binding.quantityOfProduct.onItemSelectedListener = this
 
+
 //        binding.plus.setOnClickListener(this)
 //        binding.minus.setOnClickListener(this)
 
@@ -83,15 +84,12 @@ class CartRecyclerview(val context: Context,val list: ArrayList<ProductDetails>)
         val formattedPrice = formatter.format(price)
         binding.priceOfProduct.text = formattedPrice
 
-        val cart = ActivityCartBinding.inflate(LayoutInflater.from(context))
-
-        Log.d("title: ", list.size.toString())
-
         binding.remove.setOnClickListener {
             if (title == list[position].title) {
                 val dao = UserDao()
                 dao.deleteCartItems(Firebase.auth.currentUser, title.toString())
                 list.removeAt(position)
+                it.context.startActivity(Intent(this.context,Cart::class.java))
                 notifyItemRemoved(position)
             }
         }

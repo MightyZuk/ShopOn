@@ -7,14 +7,18 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.NavUtils
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.digitron.ProductsPage
 import com.example.digitron.R
 import com.example.digitron.database.ProductData
 import com.example.digitron.database.ProductDetails
 import com.example.digitron.databinding.ActivityCartBinding
+import com.example.digitron.databinding.OrderDetailsLayoutBinding
 import com.example.digitron.payments.Payments
+import com.example.digitron.userDatabase.UserDao
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -30,11 +34,12 @@ class Cart : AppCompatActivity() {
     private lateinit var dataList: ArrayList<ProductDetails>
     private lateinit var dialog: Dialog
     private var formattedPrice by Delegates.notNull<String>()
+    private lateinit var binding: ActivityCartBinding
 
     @SuppressLint("RestrictedApi", "SetTextI18n", "NotifyDataSetChanged")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val binding = ActivityCartBinding.inflate(layoutInflater)
+        binding = ActivityCartBinding.inflate(layoutInflater)
         val view = binding.root
         supportActionBar?.title = "Shopping Cart"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -46,6 +51,9 @@ class Cart : AppCompatActivity() {
         dataList = ArrayList()
         cartAdapter = CartRecyclerview(this,cartItemsList)
 
+        loadingDialog()
+        loadData()
+
         val pro = ProductData(this)
         for (i in pro.titles.indices){
             val product = ProductDetails(
@@ -54,15 +62,23 @@ class Cart : AppCompatActivity() {
             dataList.add(product)
         }
 
-        fun loadingDialog() {
-            dialog = Dialog(this)
-            dialog.setCancelable(false)
-            dialog.setContentView(R.layout.loading_dialog)
-            dialog.create()
-            dialog.show()
+        binding.buyNow.setOnClickListener {
+            Intent(this, ProductsPage::class.java).also { startActivity(it) }
         }
 
-        loadingDialog()
+        binding.cartItems.layoutManager = LinearLayoutManager(this)
+        binding.cartItems.adapter = cartAdapter
+
+        binding.proceedToCheckout.setOnClickListener{
+            Intent(this,Payments::class.java).also {
+                it.putExtra("totalPrice",formattedPrice)
+                startActivity(it)
+            }
+        }
+
+    }
+
+    private fun loadData(){
         Firebase.firestore.collection("users").document(Firebase.auth.currentUser!!.displayName.toString())
             .collection("cartItems").get().addOnSuccessListener {
                 if (it != null) {
@@ -102,25 +118,18 @@ class Cart : AppCompatActivity() {
                 }
 
             }
-
-        binding.buyNow.setOnClickListener {
-            Intent(this, ProductsPage::class.java).also { startActivity(it) }
-        }
-
-        binding.cartItems.layoutManager = LinearLayoutManager(this)
-        binding.cartItems.adapter = cartAdapter
-        binding.proceedToCheckout.setOnClickListener{
-            Intent(this,Payments::class.java).also {
-                it.putExtra("totalPrice",formattedPrice)
-                startActivity(it)
-            }
-        }
-
     }
 
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return super.onSupportNavigateUp()
+    private fun loadingDialog() {
+        dialog = Dialog(this)
+        dialog.setCancelable(false)
+        dialog.setContentView(R.layout.loading_dialog)
+        dialog.create()
+        dialog.show()
     }
 
+    override fun onBackPressed() {
+        NavUtils.navigateUpFromSameTask(this)
+        super.onBackPressed()
+    }
 }

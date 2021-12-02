@@ -40,6 +40,9 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.smarteist.autoimageslider.SliderAnimations
 import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import org.w3c.dom.Text
 import java.util.jar.Manifest
 
@@ -75,17 +78,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         Firebase.firestore.collection("users").document(Firebase.auth.currentUser?.displayName.toString())
             .get().addOnSuccessListener {
                 if (it != null){
-                    val name = it.getString("name")
-                    val image = it.getString("name")?.get(0)?.toUpperCase().toString()
+                    GlobalScope.launch(Dispatchers.IO) {
+                        val name = it.getString("name")
+                        val image = it.getString("name")?.get(0)?.toUpperCase().toString()
 
-                    editor.putString("name",name)
-                    editor.putString("image",image)
-                    editor.apply()
-
+                        editor.putString("name",name)
+                        editor.putString("image",image)
+                        editor.apply()
+                    }
                 }else{
                     editor.clear().apply()
                     Toast.makeText(this,"Can't fetch data",Toast.LENGTH_SHORT).show()
                 }
+
                 val b = binding.navigationView.getHeaderView(0)
                 b.findViewById<TextView>(R.id.userTop).text = pref.getString("name","User")
                 b.findViewById<TextView>(R.id.image).text = pref.getString("image","U")
@@ -128,13 +133,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             true
         }
 
-        val images = arrayOf(R.drawable.web_dev,R.drawable.dm,R.drawable.crm)
+//        val images = arrayOf(R.drawable.web_dev,R.drawable.dm,R.drawable.crm,R.drawable.mad)
 
-        val sliderAdapter = ImageAdapter(this,images)
+//        val sliderAdapter = ImageAdapter(this,images)
 
-        binding.sliderView.setSliderAdapter(sliderAdapter)
-        binding.sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
-        binding.sliderView.startAutoCycle()
+//        binding.sliderView.setSliderAdapter(sliderAdapter)
+//        binding.sliderView.setSliderTransformAnimation(SliderAnimations.SIMPLETRANSFORMATION)
+//        binding.sliderView.startAutoCycle()
 
         actionBarDrawerToggle = ActionBarDrawerToggle(this,binding.drawerLayout,binding.toolbar,R.string.nav_open,R.string.nav_close)
         binding.drawerLayout.addDrawerListener(actionBarDrawerToggle)
@@ -149,6 +154,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.fb.setOnClickListener(this)
         binding.linked.setOnClickListener(this)
         binding.yt.setOnClickListener(this)
+        binding.sliderView.setOnClickListener(this)
 
     }
 
@@ -210,11 +216,14 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 val youtubeUrl = Uri.parse("https://www.youtube.com/channel/UCojsSw92BTSIwS_KEqMbusQ")
                 startActivity(Intent(Intent.ACTION_VIEW,youtubeUrl))
             }
+            R.id.sliderView -> {
+                startActivity(Intent(this,ProductsPage::class.java))
+            }
         }
     }
 
-    fun sliderView(view: android.view.View) {
-        startActivity(Intent(this,ProductsPage::class.java))
-    }
+//    fun sliderView(view: android.view.View) {
+//        startActivity(Intent(this,ProductsPage::class.java))
+//    }
 
 }
